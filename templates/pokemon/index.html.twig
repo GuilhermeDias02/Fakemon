@@ -9,13 +9,13 @@
     body {margin: 0;padding: 0; box-sizing: border-box;}
     .container {max-width: 800px;margin: 0 auto;padding: 20px; }
     .card { display: flex;
-        flex-direction: column;object-fit:contain; border-radius: 10px;height: 150px;width: calc(33.33% - 20px);margin: 10px;background-color: #f0f0f0;padding: 20px;box-sizing: border-box;float: left;transition: transform 0.3s ease-in-out, border-radius 0.3s ease-in-out;overflow: hidden;}
-    .card:hover {transform: scale(1.2); }
+        flex-direction: column;object-fit:contain; border-radius: 10px;height: 150px;width: calc(33.33% - 20px);margin: 10px;background-color: #f0f0f0;padding: 20px;box-sizing: border-box;float: left;transition: transform 0.3s ease-in-out, border-radius 0.3s ease-in-out;overflow: hidden;
+        text-decoration: none; color: white; position: relative; display: block;}
+    .card:hover {transform: scale(1.1); }
 
   .top-section {
-        background-color: #f0f0f0;
-        border-bottom: 2px solid #ccc;
         height: 30%;
+        display: flex; justify-content: space-between;
     }
 
     .row {
@@ -26,9 +26,13 @@
     .column {
         flex: 1;
         padding: 10px;
-        background-color: #e0e0e0;
     }
 
+  .columnType {
+        flex: 1;
+        padding: 10px;
+        flex-direction: column; margin-top: 30px; margin-left: -20px; position: relative;
+    }
     .column:last-child {
         border-right: none; 
     }
@@ -50,28 +54,35 @@
         color: black; /* Change la couleur du texte du lien */
     }
 
+.type{
+border: 2px solid white; border-radius: 15px; height: 15px; width: 70px; margin-top: 2px; text-align: center; justify-content:center; font-size: 0.75rem;color: white;
+}
+.background-image{
+    position: absolute; bottom: -70%; right: -130%; background-size: cover; width: 100px; height: 100px; opacity: 0.8;"
+}
+.pokemonImage{
+
+position: relative; z-index: 2; height: 70px; width: auto;
+}
 
 </style>
 
 <div class="container">
-    <div class="card">Contenu de la carte
-            <img src="{{ asset('asset/imagePokemon/sala.png') }}" alt="Image de la carte">
 
-    </div>
    
-<a href="google.fr" class="card" style="text-decoration: none; color: black; position: relative; display: block;">
-    <div class="top-section" style="display: flex; justify-content: space-between;">
-        <span>titre</span>
-        <span>num</span>
+<a href="google.fr" class="card" style="background-color: #ff6666;">
+    <div class="top-section">
+        <span>Salameche</span>
+        <span >#07</span>
     </div>
     <div class="row">
-        <div class="column" style="flex-direction: column; margin-top: 30px; margin-left: -20px; position: relative;">
-            <div style="border: 2px solid black; border-radius: 15px; height: 15px; width: 70px; margin-top: 2px; text-align: center; justify-content:center; font-size: 0.75rem;">plante</div>
-            <div style="border: 2px solid black; border-radius: 15px; height: 15px; width: 70px; margin-top: 2px; text-align: center; justify-content:center; font-size: 0.75rem;">poison</div>
-            <div class="background-image" style="position: absolute; bottom: -70%; right: -130%; background-image: url('{{ asset('asset/imagePokemon/pokeball.png') }}'); background-size: cover; width: 100px; height: 100px; opacity: 0.8;"></div>
+        <div class="columnType">
+            <div class="type">plante</div>
+            <div class="type">poison</div>
+            <div class="background-image" style="background-image: url('{{ asset('asset/imagePokemon/pokeball.png') }}');"></div>
         </div>
         <div class="column" style="text-align: center;">
-            <img src="{{ asset('asset/imagePokemon/sala.png') }}" alt="Image de la carte" style="position: relative; z-index: 2; height: 70px; width: auto;">
+            <img src="{{ asset('asset/imagePokemon/sala.png') }}" class="pokemonImage" alt="Image de la carte">
             <div style="position: relative;">
                 <div class="shadow-effect" style="z-index: 0;"></div>
             </div>
@@ -79,18 +90,13 @@
     </div>
 </a>
 
-
-
-    
-    </div>
-    <div class="card">Contenu de la carte</div>
+        <div class="card">Contenu de la carte</div>
        <div class="card">Contenu de la carte</div>
     <div class="card">Contenu de la carte</div>
     <div class="card">Contenu de la carte</div>
        <div class="card">Contenu de la carte</div>
     <div class="card">Contenu de la carte</div>
     <div class="card">Contenu de la carte</div>
-    <!-- Répétez ces trois lignes pour chaque groupe de trois cartes -->
 </div>
 
 
