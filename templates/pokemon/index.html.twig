@@ -1,0 +1,80 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello PokemonController!{% endblock %}
+
+{% block body %}
+<style>
+
+    h1{ color: red;}
+    body {margin: 0;padding: 0; box-sizing: border-box;}
+    .container {max-width: 800px;margin: 0 auto;padding: 20px; }
+    .card { display: flex;
+        flex-direction: column;object-fit:contain; border-radius: 10px;height: 150px;width: calc(33.33% - 20px);margin: 10px;background-color: #f0f0f0;padding: 20px;box-sizing: border-box;float: left;transition: transform 0.3s ease-in-out, border-radius 0.3s ease-in-out;}
+    .card:hover {transform: scale(1.2);border: 2px solid #ccc; }
+.card img {
+            position: static;
+            bottom: 0;
+            left: 0;
+            max-width: 100%;
+            height: 15px;
+            width: 15px;
+            border-bottom-right-radius: 10px; /* Ajustez le rayon des coins pour l'image */
+        }
+
+  .top-section {
+        background-color: #f0f0f0;
+        padding: 20px;
+    }
+
+    .row {
+        display: flex;
+    }
+
+    .column {
+        flex: 1;
+        padding: 20px;
+        background-color: #e0e0e0;
+    }
+
+    .column:last-child {
+        border-right: none; 
+    }
+
+
+
+
+</style>
+
+<div class="container">
+    <div class="card">Contenu de la carte
+            <img src="{{ asset('asset/imagePokemon/sala.png') }}" alt="Image de la carte">
+
+    </div>
+    <div class="card">
+    <div class="top-section">
+titre
+    </div>
+    <div class="row">
+        <div class="column">
+            2
+        </div>
+        <div class="column">
+                 3
+        </div>
+    </div>
+    
+    </div>
+    <div class="card">Contenu de la carte</div>
+       <div class="card">Contenu de la carte</div>
+    <div class="card">Contenu de la carte</div>
+    <div class="card">Contenu de la carte</div>
+       <div class="card">Contenu de la carte</div>
+    <div class="card">Contenu de la carte</div>
+    <div class="card">Contenu de la carte</div>
+    <!-- Répétez ces trois lignes pour chaque groupe de trois cartes -->
+</div>
+
+
+
+
+{% endblock %}
