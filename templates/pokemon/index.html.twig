@@ -9,30 +9,23 @@
     body {margin: 0;padding: 0; box-sizing: border-box;}
     .container {max-width: 800px;margin: 0 auto;padding: 20px; }
     .card { display: flex;
-        flex-direction: column;object-fit:contain; border-radius: 10px;height: 150px;width: calc(33.33% - 20px);margin: 10px;background-color: #f0f0f0;padding: 20px;box-sizing: border-box;float: left;transition: transform 0.3s ease-in-out, border-radius 0.3s ease-in-out;}
-    .card:hover {transform: scale(1.2);border: 2px solid #ccc; }
-.card img {
-            position: static;
-            bottom: 0;
-            left: 0;
-            max-width: 100%;
-            height: 15px;
-            width: 15px;
-            border-bottom-right-radius: 10px; /* Ajustez le rayon des coins pour l'image */
-        }
+        flex-direction: column;object-fit:contain; border-radius: 10px;height: 150px;width: calc(33.33% - 20px);margin: 10px;background-color: #f0f0f0;padding: 20px;box-sizing: border-box;float: left;transition: transform 0.3s ease-in-out, border-radius 0.3s ease-in-out;overflow: hidden;}
+    .card:hover {transform: scale(1.2); }
 
   .top-section {
         background-color: #f0f0f0;
-        padding: 20px;
+        border-bottom: 2px solid #ccc;
+        height: 30%;
     }
 
     .row {
         display: flex;
+        height: 70%;
     }
 
     .column {
         flex: 1;
-        padding: 20px;
+        padding: 10px;
         background-color: #e0e0e0;
     }
 
@@ -40,7 +33,22 @@
         border-right: none; 
     }
 
+    .shadow-effect {
+        position: absolute;
+        bottom: 2px;
+        left: 45%;
+        transform: translateX(-50%);
+        width: 70px;
+        height: 10px; /* Ajustez la hauteur de l'ombre allongée */
+        background: rgba(0, 0, 0, 0.1); /* Couleur et opacité de l'ombre */
+        border-radius: 50%;
+    }
+  
 
+    .card a{
+          text-decoration: none; /* Supprime le soulignement */
+        color: black; /* Change la couleur du texte du lien */
+    }
 
 
 </style>
@@ -50,18 +58,29 @@
             <img src="{{ asset('asset/imagePokemon/sala.png') }}" alt="Image de la carte">
 
     </div>
-    <div class="card">
-    <div class="top-section">
-titre
+   
+<a href="google.fr" class="card" style="text-decoration: none; color: black; position: relative; display: block;">
+    <div class="top-section" style="display: flex; justify-content: space-between;">
+        <span>titre</span>
+        <span>num</span>
     </div>
     <div class="row">
-        <div class="column">
-            2
+        <div class="column" style="flex-direction: column; margin-top: 30px; margin-left: -20px; position: relative;">
+            <div style="border: 2px solid black; border-radius: 15px; height: 15px; width: 70px; margin-top: 2px; text-align: center; justify-content:center; font-size: 0.75rem;">plante</div>
+            <div style="border: 2px solid black; border-radius: 15px; height: 15px; width: 70px; margin-top: 2px; text-align: center; justify-content:center; font-size: 0.75rem;">poison</div>
+            <div class="background-image" style="position: absolute; bottom: -70%; right: -130%; background-image: url('{{ asset('asset/imagePokemon/pokeball.png') }}'); background-size: cover; width: 100px; height: 100px; opacity: 0.8;"></div>
         </div>
-        <div class="column">
-                 3
+        <div class="column" style="text-align: center;">
+            <img src="{{ asset('asset/imagePokemon/sala.png') }}" alt="Image de la carte" style="position: relative; z-index: 2; height: 70px; width: auto;">
+            <div style="position: relative;">
+                <div class="shadow-effect" style="z-index: 0;"></div>
+            </div>
         </div>
     </div>
+</a>
+
+
+
     
     </div>
     <div class="card">Contenu de la carte</div>
