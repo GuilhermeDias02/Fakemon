@@ -69,10 +69,29 @@ position: relative; z-index: 2; height: 70px; width: auto;
 
 <div class="container">
 
-   
-<a href="google.fr" class="card" style="background-color: #ff6666;">
+   {% if pokemons %}
+{% for pokemon in pokemons %}
+<a href="google.fr" class="card" style="
+{% if pokemon.type == "feu" %}
+
+background-color: #ff6666;
+{% elseif  pokemon.type == "plante" %}
+
+background-color: green;
+
+{% elseif  pokemon.type == "eau" %}
+background-color: blue;
+
+
+{% endif %}
+
+
+
+
+">
     <div class="top-section">
-        <span>Salameche</span>
+        <span>{{ pokemon.name  }}
+</span>
         <span >#07</span>
     </div>
     <div class="row">
@@ -82,7 +101,7 @@ position: relative; z-index: 2; height: 70px; width: auto;
             <div class="background-image" style="background-image: url('{{ asset('asset/imagePokemon/pokeball.png') }}');"></div>
         </div>
         <div class="column" style="text-align: center;">
-            <img src="{{ asset('asset/imagePokemon/sala.png') }}" class="pokemonImage" alt="Image de la carte">
+            <img src="{{ asset(pokemon.image) }}" class="pokemonImage" alt="Image de la carte">
             <div style="position: relative;">
                 <div class="shadow-effect" style="z-index: 0;"></div>
             </div>
@@ -90,16 +109,13 @@ position: relative; z-index: 2; height: 70px; width: auto;
     </div>
 </a>
 
-        <div class="card">Contenu de la carte</div>
-       <div class="card">Contenu de la carte</div>
-    <div class="card">Contenu de la carte</div>
-    <div class="card">Contenu de la carte</div>
-       <div class="card">Contenu de la carte</div>
-    <div class="card">Contenu de la carte</div>
-    <div class="card">Contenu de la carte</div>
+
+{% endfor %}
+{% endif %}
+
+        
 </div>
 
-
-
-
 {% endblock %}
+
+
