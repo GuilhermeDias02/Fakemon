@@ -17,87 +17,26 @@ class PcBox
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\OneToMany(mappedBy: 'pcBox', targetEntity: trainer::class)]
-    private Collection $idTrainer;
-
-    #[ORM\OneToMany(mappedBy: 'pcBox', targetEntity: Pokemon::class)]
-    private Collection $idPokemon;
-
     #[ORM\Column(nullable: true)]
     private ?int $level = null;
 
     #[ORM\Column]
     private ?bool $captured = null;
 
+    #[ORM\ManyToOne(inversedBy: 'pcBoxes')]
+    private ?Trainer $idTrainer = null;
+
+    #[ORM\ManyToOne(inversedBy: 'pcBoxes')]
+    private ?Pokemon $idPokemon = null;
+
     public function __construct()
     {
-        $this->idTrainer = new ArrayCollection();
-        $this->idPokemon = new ArrayCollection();
+
     }
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    /**
-     * @return Collection<int, trainer>
-     */
-    public function getIdTrainer(): Collection
-    {
-        return $this->idTrainer;
-    }
-
-    public function addIdTrainer(trainer $idTrainer): static
-    {
-        if (!$this->idTrainer->contains($idTrainer)) {
-            $this->idTrainer->add($idTrainer);
-            $idTrainer->setPcBox($this);
-        }
-
-        return $this;
-    }
-
-    public function removeIdTrainer(trainer $idTrainer): static
-    {
-        if ($this->idTrainer->removeElement($idTrainer)) {
-            // set the owning side to null (unless already changed)
-            if ($idTrainer->getPcBox() === $this) {
-                $idTrainer->setPcBox(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Pokemon>
-     */
-    public function getIdPokemon(): Collection
-    {
-        return $this->idPokemon;
-    }
-
-    public function addIdPokemon(Pokemon $idPokemon): static
-    {
-        if (!$this->idPokemon->contains($idPokemon)) {
-            $this->idPokemon->add($idPokemon);
-            $idPokemon->setPcBox($this);
-        }
-
-        return $this;
-    }
-
-    public function removeIdPokemon(Pokemon $idPokemon): static
-    {
-        if ($this->idPokemon->removeElement($idPokemon)) {
-            // set the owning side to null (unless already changed)
-            if ($idPokemon->getPcBox() === $this) {
-                $idPokemon->setPcBox(null);
-            }
-        }
-
-        return $this;
     }
 
     public function getLevel(): ?int
@@ -124,4 +63,27 @@ class PcBox
         return $this;
     }
 
+    public function getIdTrainer(): ?Trainer
+    {
+        return $this->idTrainer;
+    }
+
+    public function setIdTrainer(?Trainer $idTrainer): static
+    {
+        $this->idTrainer = $idTrainer;
+
+        return $this;
+    }
+
+    public function getIdPokemon(): ?Pokemon
+    {
+        return $this->idPokemon;
+    }
+
+    public function setIdPokemon(?Pokemon $idPokemon): static
+    {
+        $this->idPokemon = $idPokemon;
+
+        return $this;
+    }
 }
