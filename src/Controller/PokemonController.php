@@ -13,7 +13,7 @@ class PokemonController extends AbstractController
     #[Route('/pokemon', name: 'app_pokemon')]
     public function index(ManagerRegistry $doctrine): Response
     {    
-        $pokemons = $doctrine->getRepository(Pokemon::class)->findAll();
+        $pokemons = $doctrine->getRepository(Pokemon::class)->findBy([], ['idPokedex' => 'ASC']);
 
         return $this->render('pokemon/index.html.twig', [
             'controller_name' => 'PokemonController',
