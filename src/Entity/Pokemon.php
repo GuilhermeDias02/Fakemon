@@ -34,11 +34,8 @@ class Pokemon
     #[ORM\Column(length: 30, nullable: true)]
     private ?string $spritePath = null;
 
-    #[ORM\ManyToMany(targetEntity: PcBox::class, mappedBy: 'idTrainer')]
+    #[ORM\OneToMany(mappedBy: 'idPokemon', targetEntity: PcBox::class)]
     private Collection $pcBoxes;
-
-    #[ORM\ManyToOne(inversedBy: 'idPokemon')]
-    private ?PcBox $pcBox = null;
 
     public function __construct()
     {
@@ -134,7 +131,7 @@ class Pokemon
     {
         if (!$this->pcBoxes->contains($pcBox)) {
             $this->pcBoxes->add($pcBox);
-            $pcBox->addIdTrainer($this);
+            $pcBox->setIdPokemon($this);
         }
 
         return $this;
@@ -143,20 +140,11 @@ class Pokemon
     public function removePcBox(PcBox $pcBox): static
     {
         if ($this->pcBoxes->removeElement($pcBox)) {
-            $pcBox->removeIdTrainer($this);
+            // set the owning side to null (unless already changed)
+            if ($pcBox->getIdPokemon() === $this) {
+                $pcBox->setIdPokemon(null);
+            }
         }
-
-        return $this;
-    }
-
-    public function getPcBox(): ?PcBox
-    {
-        return $this->pcBox;
-    }
-
-    public function setPcBox(?PcBox $pcBox): static
-    {
-        $this->pcBox = $pcBox;
 
         return $this;
     }

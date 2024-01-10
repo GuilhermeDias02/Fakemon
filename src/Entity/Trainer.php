@@ -3,11 +3,15 @@
 namespace App\Entity;
 
 use App\Repository\TrainerRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: TrainerRepository::class)]
+#[UniqueEntity(fields: ['username'], message: 'There is already an account with this username')]
 class Trainer implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -27,9 +31,13 @@ class Trainer implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
-    #[ORM\ManyToOne(inversedBy: 'idTrainer')]
-    #[ORM\JoinColumn(nullable: true)]
-    private ?PcBox $pcBox = null;
+    #[ORM\OneToMany(mappedBy: 'idTrainer', targetEntity: PcBox::class)]
+    private Collection $pcBoxes;
+
+    public function __construct()
+    {
+        $this->pcBoxes = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -101,14 +109,32 @@ class Trainer implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
-    public function getPcBox(): ?PcBox
+    /**
+     * @return Collection<int, PcBox>
+     */
+    public function getPcBoxes(): Collection
     {
-        return $this->pcBox;
+        return $this->pcBoxes;
     }
 
-    public function setPcBox(?PcBox $pcBox): static
+    public function addPcBox(PcBox $pcBox): static
     {
-        $this->pcBox = $pcBox;
+        if (!$this->pcBoxes->contains($pcBox)) {
+            $this->pcBoxes->add($pcBox);
+            $pcBox->setIdTrainer($this);
+        }
+
+        return $this;
+    }
+
+    public function removePcBox(PcBox $pcBox): static
+    {
+        if ($this->pcBoxes->removeElement($pcBox)) {
+            // set the owning side to null (unless already changed)
+            if ($pcBox->getIdTrainer() === $this) {
+                $pcBox->setIdTrainer(null);
+            }
+        }
 
         return $this;
     }
