@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\CollectionOperationInterface;
+use ApiPlatform\Metadata\Post;
 use App\Repository\PokemonRepository;
 use Doctrine\ORM\Mapping as ORM;
 
