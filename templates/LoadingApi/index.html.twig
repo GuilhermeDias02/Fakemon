@@ -65,7 +65,7 @@
 
         document.addEventListener("DOMContentLoaded", function() {
             var pokemons = [];
-        var apiUrl = 'http://127.0.0.1:8000/api/pokema';
+        var apiUrl = 'http://127.0.0.1:8000/api/pokemon';
         var regionFilterButtons = document.querySelectorAll('.region-filter-button');
         var filtreRegionVar = [];
          var filtreTypeVar = [];
@@ -258,6 +258,7 @@ function fetchPokemonsByFilter() {
 
             }
 
+
             console.log(`Pokemons récupérés depuis l'API avec filtre':`, pokemons);
             displayPokemonsList(pokemons);
         })
@@ -272,6 +273,8 @@ function fetchPokemonsByFilter() {
                         pokemons = data['hydra:member']; // Assurez-vous que la structure des données correspond à ce que vous attendez
                         console.log("Pokemons récupérés depuis l'API :", pokemons);
    
+                         pokemons.sort((a, b) => a.idNat - b.idNat);
+
                         // Ajoutez ici le code pour manipuler les données des pokemons et les afficher dans votre interface
                         displayPokemonsList(pokemons);
                     })
@@ -364,7 +367,7 @@ function displayPokemonsList(pokemons) {
     var tableCells = pokemonTableElement.querySelectorAll('th, td');
     tableCells.forEach(function (cell) {
         cell.style.border = '1px solid #ddd';
-        cell.style.padding = '8px';
+        cell.style.padding = '5px';
         cell.style.textAlign = 'left';
     });
 
@@ -401,7 +404,7 @@ function deletePokemon(pokemonId) {
 
   if (isConfirmed) {
     // Make a DELETE request to your API endpoint
-    fetch(`http://127.0.0.1:8000/api/pokema/${pokemonId}`, {
+    fetch(`http://127.0.0.1:8000/api/pokemon/${pokemonId}`, {
       method: 'DELETE',
       headers: {
           'Content-Type': 'application/ld+json', // Set the content type to application/ld+json
@@ -422,7 +425,7 @@ function deletePokemon(pokemonId) {
 function viewPokemon(id) {
         var containerElementView = document.getElementById('pokemonViewContainer');
 
-    fetch(`http://127.0.0.1:8000/api/pokema/${id}`, {
+    fetch(`http://127.0.0.1:8000/api/pokemon/${id}`, {
       method: 'GET',
       headers: {
           'Content-Type': 'application/ld+json', // Set the content type to application/ld+json

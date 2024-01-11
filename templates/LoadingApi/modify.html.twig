@@ -7,7 +7,7 @@
     <script>
         // Function to fetch Pokemon data by ID
         function fetchPokemonById(id) {
-            return fetch(`http://127.0.0.1:8000/api/pokema/${id}`, {
+            return fetch(`http://127.0.0.1:8000/api/pokemon/${id}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/ld+json',
@@ -67,7 +67,7 @@
             var pokemonId = {{ id }}; // Replace with your dynamic ID
 
             // Send a PATCH request with the updated data
-            fetch(`http://127.0.0.1:8000/api/pokema/${pokemonId}`, {
+            fetch(`http://127.0.0.1:8000/api/pokemon/${pokemonId}`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/merge-patch+json',

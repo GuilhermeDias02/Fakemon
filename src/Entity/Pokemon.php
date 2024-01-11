@@ -36,6 +36,9 @@ class Pokemon
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $region = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $idNat = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -109,6 +112,18 @@ class Pokemon
     public function setRegion(?string $region): static
     {
         $this->region = $region;
+
+        return $this;
+    }
+
+    public function getIdNat(): ?int
+    {
+        return $this->idNat;
+    }
+
+    public function setIdNat(?int $idNat): static
+    {
+        $this->idNat = $idNat;
 
         return $this;
     }
