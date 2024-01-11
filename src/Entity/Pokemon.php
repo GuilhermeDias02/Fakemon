@@ -2,13 +2,15 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\CollectionOperationInterface;
+use ApiPlatform\Metadata\Post;
 use App\Repository\PokemonRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
+
 #[ORM\Entity(repositoryClass: PokemonRepository::class)]
+#[ApiResource]
 class Pokemon
 {
     #[ORM\Id]
@@ -16,47 +18,27 @@ class Pokemon
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
-    private ?int $idPokedex = null;
-
-    #[ORM\Column(length: 30)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $name = null;
 
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $description = null;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $type = null;
 
-    #[ORM\Column(length: 30)]
-    private ?string $typeFirst = null;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $image = null;
 
-    #[ORM\Column(length: 30, nullable: true)]
-    private ?string $typeSecond = null;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $type2 = null;
 
-    #[ORM\Column(length: 30, nullable: true)]
-    private ?string $spritePath = null;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $idPokedex = null;
 
-    #[ORM\OneToMany(mappedBy: 'idPokemon', targetEntity: PcBox::class)]
-    private Collection $pcBoxes;
-
-    public function __construct()
-    {
-        $this->pcBoxes = new ArrayCollection();
-    }
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $region = null;
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getIdPokedex(): ?int
-    {
-        return $this->idPokedex;
-    }
-
-    public function setIdPokedex(int $idPokedex): static
-    {
-        $this->idPokedex = $idPokedex;
-
-        return $this;
     }
 
     public function getName(): ?string
@@ -64,87 +46,69 @@ class Pokemon
         return $this->name;
     }
 
-    public function setName(string $name): static
+    public function setName(?string $name): static
     {
         $this->name = $name;
 
         return $this;
     }
 
-    public function getDescription(): ?string
+    public function getType(): ?string
     {
-        return $this->description;
+        return $this->type;
     }
 
-    public function setDescription(?string $description): static
+    public function setType(?string $type): static
     {
-        $this->description = $description;
+        $this->type = $type;
 
         return $this;
     }
 
-    public function getTypeFirst(): ?string
+    public function getImage(): ?string
     {
-        return $this->typeFirst;
+        return $this->image;
     }
 
-    public function setTypeFirst(string $typeFirst): static
+    public function setImage(?string $image): static
     {
-        $this->typeFirst = $typeFirst;
+        $this->image = $image;
 
         return $this;
     }
 
-    public function getTypeSecond(): ?string
+    public function getType2(): ?string
     {
-        return $this->typeSecond;
+        return $this->type2;
     }
 
-    public function setTypeSecond(string $typeSecond): static
+    public function setType2(?string $type2): static
     {
-        $this->typeSecond = $typeSecond;
+        $this->type2 = $type2;
 
         return $this;
     }
 
-    public function getSpritePath(): ?string
+    public function getIdPokedex(): ?string
     {
-        return $this->spritePath;
+        return $this->idPokedex;
     }
 
-    public function setSpritePath(?string $spritePath): static
+    public function setIdPokedex(?string $idPokedex): static
     {
-        $this->spritePath = $spritePath;
+        $this->idPokedex = $idPokedex;
 
         return $this;
     }
 
-    /**
-     * @return Collection<int, PcBox>
-     */
-    public function getPcBoxes(): Collection
+    public function getRegion(): ?string
     {
-        return $this->pcBoxes;
+        return $this->region;
     }
 
-    public function addPcBox(PcBox $pcBox): static
+    public function setRegion(?string $region): static
     {
-        if (!$this->pcBoxes->contains($pcBox)) {
-            $this->pcBoxes->add($pcBox);
-            $pcBox->setIdPokemon($this);
-        }
-
-        return $this;
-    }
-
-    public function removePcBox(PcBox $pcBox): static
-    {
-        if ($this->pcBoxes->removeElement($pcBox)) {
-            // set the owning side to null (unless already changed)
-            if ($pcBox->getIdPokemon() === $this) {
-                $pcBox->setIdPokemon(null);
-            }
-        }
+        $this->region = $region;
 
         return $this;
     }
