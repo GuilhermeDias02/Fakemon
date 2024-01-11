@@ -3,10 +3,49 @@
 
         {% block body %}
 
+<style>
+  .selected {
+    background-color: #4CAF50; /* Couleur de fond lorsque le bouton est sélectionné */
+    color: white; /* Couleur du texte lorsque le bouton est sélectionné */
+  }
+</style>
+
         <h1>Pokemon Api</h1>
+        <div>
 <a href="{{ path('pokemon_add') }}">
     <button class="button">Ajouter</button>
 </a>
+</div>
+
+<div>
+<h2>Filtre par region</h2>
+<button class="button" id="allFilterRegion" class="region-filter-button selected">All</button>
+
+<button class="button" id="johtoFilter" class="region-filter-button">Johto</button>
+
+<button class="button" id="kantoFilter" class="region-filter-button">Kanto</button>
+
+<button class="button" id="sinnohFilter" class="region-filter-button">Sinnoh</button>
+
+<button class="button" id="unysFilter" class="region-filter-button">Unys</button>
+
+<button class="button" id="nullFilterRegion" class="region-filter-button">Aucun (-)</button>
+</div>
+
+<h2>Filtre par Type</h2>
+<button class="button" id="allFilterType">All</button>
+
+<button class="button" id="fireFilter">Feu</button>
+
+<button class="button" id="waterFilter">Eau</button>
+
+<button class="button" id="plantFilter">Plante</button>
+
+<button class="button" id="fighterFilter">Combat</button>
+
+<button class="button" id="nullFilterType">Aucun (-)</button>
+</div>
+
 
 <div id="pokemonListContainer" style="padding: 50px;">
             </div>
@@ -26,14 +65,207 @@
 
         document.addEventListener("DOMContentLoaded", function() {
             var pokemons = [];
-            document.querySelector('.button-view').addEventListener('click', function() {
+        var apiUrl = 'http://127.0.0.1:8000/api/pokema';
+        var regionFilterButtons = document.querySelectorAll('.region-filter-button');
+        var filtreRegionVar = [];
+         var filtreTypeVar = [];
+
+
+
+    document.getElementById('allFilterRegion').classList.add('selected');
+    document.getElementById('allFilterType').classList.add('selected');
+
+
+     document.querySelector('.button-view').addEventListener('click', function() {
     var containerElementView = document.getElementById('pokemonViewContainer');
     containerElementView.innerHTML = '';
 });
 
+        document.getElementById('allFilterRegion').addEventListener('click', function() {
+            fetchPokemons();
+    clearFilterRegion();
+    this.classList.add('selected');
+            
+        });
+
+
+    document.getElementById('johtoFilter').addEventListener('click', function() {
+        // Toggle between "-" and "johto" when the button is clicked
+          filtreRegionVar = [];
+        filtreRegionVar.push("johto");
+                fetchPokemonsByFilter();
+
+         clearFilterRegion();
+
+    this.classList.add('selected');
+      
+
+
+    });
+
+       document.getElementById('nullFilterRegion').addEventListener('click', function() {
+        // Toggle between "-" and "johto" when the button is clicked
+           filtreRegionVar = [];
+        filtreRegionVar.push("-");
+        fetchPokemonsByFilter();
+         clearFilterRegion();
+    this.classList.add('selected');
+    });
+
+        document.getElementById('kantoFilter').addEventListener('click', function() {
+        // Toggle between "-" and "johto" when the button is clicked
+         filtreRegionVar = [];
+        filtreRegionVar.push("kanto");
+        fetchPokemonsByFilter();
+        
+         clearFilterRegion();
+
+    this.classList.add('selected');
+    });
+
+               document.getElementById('sinnohFilter').addEventListener('click', function() {
+        // Toggle between "-" and "johto" when the button is clicked
+         filtreRegionVar = [];
+        filtreRegionVar.push("sinnoh");
+
+        fetchPokemonsByFilter();
+        
+         clearFilterRegion();
+
+    this.classList.add('selected');
+    });
+
+     document.getElementById('unysFilter').addEventListener('click', function() {
+        // Toggle between "-" and "johto" when the button is clicked
+         filtreRegionVar = [];
+        filtreRegionVar.push("unys");
+
+        fetchPokemonsByFilter();
+        
+         clearFilterRegion();
+
+    this.classList.add('selected');
+    });
+
+
+        document.getElementById('allFilterType').addEventListener('click', function() {
+        // Toggle between "-" and "johto" when the button is clicked
+           filtreTypeVar = [];
+        fetchPokemons();
+
+        
+         clearFilterType();
+
+    this.classList.add('selected');
+        
+    });
+
+
+       document.getElementById('nullFilterType').addEventListener('click', function() {
+        // Toggle between "-" and "johto" when the button is clicked
+               filtreTypeVar = [];
+        filtreTypeVar.push("-");
+        fetchPokemonsByFilter();
+        
+         clearFilterType();
+
+    this.classList.add('selected');
+    });
+
+
+   
+
+         document.getElementById('fireFilter').addEventListener('click', function() {
+        // Toggle between "-" and "johto" when the button is clicked
+               filtreTypeVar = [];
+        filtreTypeVar.push("fire");
+        fetchPokemonsByFilter();
+        
+         clearFilterType();
+
+    this.classList.add('selected');
+    });
+
+             document.getElementById('waterFilter').addEventListener('click', function() {
+        // Toggle between "-" and "johto" when the button is clicked
+             filtreTypeVar = [];
+        filtreTypeVar.push("water");
+        fetchPokemonsByFilter();
+        
+         clearFilterType();
+
+    this.classList.add('selected');
+    });
+
+                 document.getElementById('plantFilter').addEventListener('click', function() {
+        // Toggle between "-" and "johto" when the button is clicked
+          filtreTypeVar = [];
+        filtreTypeVar.push("plant");
+        fetchPokemonsByFilter();
+        
+         clearFilterType();
+
+    this.classList.add('selected');
+    });
+
+                    document.getElementById('fighterFilter').addEventListener('click', function() {
+        // Toggle between "-" and "johto" when the button is clicked
+          filtreTypeVar = [];
+        filtreTypeVar.push("fighter");
+        fetchPokemonsByFilter();
+        
+         clearFilterType();
+
+    this.classList.add('selected');
+    });
+
+
+    function clearFilterRegion() {
+document.getElementById('allFilterRegion').classList.remove('selected');
+document.getElementById('sinnohFilter').classList.remove('selected');
+document.getElementById('nullFilterRegion').classList.remove('selected');
+document.getElementById('kantoFilter').classList.remove('selected');
+document.getElementById('johtoFilter').classList.remove('selected');
+document.getElementById('unysFilter').classList.remove('selected');
+
+}
+
+    function clearFilterType() {
+document.getElementById('allFilterType').classList.remove('selected');
+document.getElementById('fireFilter').classList.remove('selected');
+document.getElementById('nullFilterType').classList.remove('selected');
+document.getElementById('waterFilter').classList.remove('selected');
+document.getElementById('plantFilter').classList.remove('selected');
+document.getElementById('fighterFilter').classList.remove('selected');
+
+}
+
+function fetchPokemonsByFilter() {
+    fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+            console.log(filtreRegionVar[0]);
+            if(filtreRegionVar.length > 0 && filtreTypeVar.length > 0){
+            pokemons = data['hydra:member'].filter(pokemon => 
+    pokemon.region === filtreRegionVar[0] && pokemon.type === filtreTypeVar[0]
+);
+            }else if(filtreRegionVar.length > 0 && filtreTypeVar.length == 0){
+            pokemons = data['hydra:member'].filter(pokemon => pokemon.region === filtreRegionVar[0]);
+            }else if(filtreRegionVar.length == 0 && filtreTypeVar.length > 0){
+            pokemons = data['hydra:member'].filter(pokemon => pokemon.type === filtreTypeVar[0]);
+            }else{
+            pokemons = data['hydra:member']; // Assurez-vous que la structure des données correspond à ce que vous attendez
+
+            }
+
+            console.log(`Pokemons récupérés depuis l'API avec filtre':`, pokemons);
+            displayPokemonsList(pokemons);
+        })
+        .catch(error => console.error(`Erreur lors de la récupération des pokemons depuis l'API avec filtre ':`, error));
+}
 
             function fetchPokemons() {
-                fetch('http://127.0.0.1:8000/api/pokema')
+                fetch(apiUrl)
                     .then(response => response.json())
                     .then(data => {
                         // Mettez à jour la variable pokemons avec les données de l'API
@@ -54,6 +286,7 @@ function displayPokemonsList(pokemons) {
     var pokemonTableElement = document.createElement('table');
     pokemonTableElement.className = 'pokemon-table';
 
+  
     // Créez l'en-tête du tableau
     var headerRow = document.createElement('tr');
     for (var prop in pokemons[0]) {
@@ -85,7 +318,7 @@ function displayPokemonsList(pokemons) {
         deleteButton.textContent = 'Supprimer';
         deleteButton.addEventListener('click', function() {
             console.log("nous allons suprrimer " + pokemon.name);
-deletePokemon(pokemon.id);
+                deletePokemon(pokemon.id);
                     pokemonTableElement.deleteRow(dataRow.rowIndex);
   });
 
@@ -108,13 +341,8 @@ deletePokemon(pokemon.id);
 
     });
         
-        
-        
-        
-        
         deleteButton.style.marginRight = '2px';
-        viewButton.style.marginRight = '2px';
-        
+        viewButton.style.marginRight = '2px'; 
             
         actionsCell.appendChild(deleteButton);
         actionsCell.appendChild(viewButton);
@@ -123,10 +351,10 @@ deletePokemon(pokemon.id);
         dataRow.appendChild(actionsCell);
 
     
-
-        // Ajoutez la ligne au tableau
         pokemonTableElement.appendChild(dataRow);
     });
+
+
 
     // Ajoutez des styles de bordure
     pokemonTableElement.style.borderCollapse = 'collapse';
@@ -143,30 +371,25 @@ deletePokemon(pokemon.id);
     // Sélectionnez l'élément HTML où vous souhaitez afficher le tableau
     var containerElement = document.getElementById('pokemonListContainer');
 
+
     // Vérifiez si l'élément existe avant de l'ajouter
     if (containerElement) {
-        // Videz le contenu existant du conteneur
+        
         containerElement.innerHTML = '';
-
-        // Ajoutez le tableau au conteneur
         containerElement.appendChild(pokemonTableElement);
+
+        if (pokemons.length === 0) {
+                var noPokemonRow = document.createElement('tr');
+                var noPokemonCell = document.createElement('td');
+                noPokemonCell.colSpan = 2; // Span across all columns
+                noPokemonCell.textContent = 'Aucun Pokémon trouvé';
+                noPokemonRow.appendChild(noPokemonCell);
+                containerElement.appendChild(noPokemonRow);
+            }
+
+
     }
 }
-
-// ...
-
-
-// ...
-
-
-// ...
-
-// ...
-
-
-// ...
-
-            // Appel de la fonction fetchPokemons au chargement du DOM
             fetchPokemons();
         });
 
