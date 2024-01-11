@@ -2,7 +2,22 @@
 
 
         {% block body %}
-            <div id="pokemonListContainer"></div>
+
+        <h1>Pokemon Api</h1>
+<a href="{{ path('pokemon_add') }}">
+    <button class="button">Ajouter</button>
+</a>
+
+<div id="pokemonListContainer" style="max-width: 60%; margin: 0 auto;">
+            </div>
+
+
+    <button class="button-view">Clear</button>
+
+<div id="pokemonViewContainer" style="max-width: 60%; margin: 0 auto;">
+</div>
+
+            
 {% endblock %}
 
 {% block javascripts %}
@@ -10,10 +25,12 @@
         <script>
 
         document.addEventListener("DOMContentLoaded", function() {
-            // Initialisez un tableau pour stocker les données des pokemons
-             var titleElement = document.createElement('h2');
-                titleElement.textContent = "Test Réussi";
             var pokemons = [];
+            document.querySelector('.button-view').addEventListener('click', function() {
+    var containerElementView = document.getElementById('pokemonViewContainer');
+    containerElementView.innerHTML = '';
+});
+
 
             function fetchPokemons() {
                 fetch('http://127.0.0.1:8000/api/pokema')
@@ -29,14 +46,7 @@
                     .catch(error => console.error('Erreur lors de la récupération des pokemons depuis l\'API:', error));
             }
 
-         // ...
-
-// ...
-
-// ...
-// ...
-
-// ...
+        
 
 
 function displayPokemonsList(pokemons) {
@@ -74,33 +84,43 @@ function displayPokemonsList(pokemons) {
       var deleteButton = document.createElement('button');
         deleteButton.textContent = 'Supprimer';
         deleteButton.addEventListener('click', function() {
-console.log(pokemon.name)        });
+            console.log("nous allons suprrimer " + pokemon.name);
+deletePokemon(pokemon.id);
+                    pokemonTableElement.deleteRow(dataRow.rowIndex);
+  });
+
+
          var editButton = document.createElement('button');
     editButton.textContent = 'Modifier';
     editButton.addEventListener('click', function () {
         // Appel de la fonction pour modifier le pokemon avec l'ID correspondant
         console.log('Modifier le pokemon avec ID :', pokemon.id);
+            window.location.href = "{{ path('pokemon_modify', {id: 'POKEMON_ID'}) }}".replace('POKEMON_ID', pokemon.id);
+
     });
       var viewButton = document.createElement('button');
     viewButton.textContent = 'Voir';
     viewButton.addEventListener('click', function () {
         // Appel de la fonction pour voir le pokemon avec l'ID correspondant
         console.log('Voir le pokemon avec ID :', pokemon.id);
+                viewPokemon(pokemon.id);
+
+
     });
         
         
         
         
         
-          deleteButton.style.marginRight = '2px';
-    viewButton.style.marginRight = '2px';
+        deleteButton.style.marginRight = '2px';
+        viewButton.style.marginRight = '2px';
         
-        
-          actionsCell.appendChild(deleteButton);
-    actionsCell.appendChild(viewButton);
-    actionsCell.appendChild(editButton);
+            
+        actionsCell.appendChild(deleteButton);
+        actionsCell.appendChild(viewButton);
+        actionsCell.appendChild(editButton);
 
-    dataRow.appendChild(actionsCell);
+        dataRow.appendChild(actionsCell);
 
     
 
@@ -149,6 +169,76 @@ console.log(pokemon.name)        });
             // Appel de la fonction fetchPokemons au chargement du DOM
             fetchPokemons();
         });
+
+
+       // Function to delete a Pokémon by ID
+function deletePokemon(pokemonId) {
+  // Display a confirmation dialog
+  var isConfirmed = confirm("Voulez-vous vraiment supprimer ce Pokémon ?");
+
+  if (isConfirmed) {
+    // Make a DELETE request to your API endpoint
+    fetch(`http://127.0.0.1:8000/api/pokema/${pokemonId}`, {
+      method: 'DELETE',
+      headers: {
+          'Content-Type': 'application/ld+json', // Set the content type to application/ld+json
+        // You might need to include additional headers like authentication
+      },
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        console.log(`Pokemon with ID ${pokemonId} deleted successfully`);
+
+      })
+      .catch(error => console.error('Error deleting Pokemon:', error));
+  }
+}
+
+function viewPokemon(id) {
+        var containerElementView = document.getElementById('pokemonViewContainer');
+
+    fetch(`http://127.0.0.1:8000/api/pokema/${id}`, {
+      method: 'GET',
+      headers: {
+          'Content-Type': 'application/ld+json', // Set the content type to application/ld+json
+        // You might need to include additional headers like authentication
+      },
+    })        .then(response => response.json())
+        .then(data => {
+            // Create a Bootstrap modal
+            var modal = document.createElement('div');
+            modal.innerHTML = `
+                <div class="modal-dialog" role="document" id="${data.name}#${data.idPokedex}">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">${data.name} - #${data.idPokedex}</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p>ID: ${data.id}</p>
+                            <p>Type: ${data.type}</p>
+                            <p>Type 2: ${data.type2 || '-'}</p>
+                            <!-- Add more details here based on your data structure -->
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+                    containerElementView.appendChild(modal);
+
+        }
+
+
+        )
+}
+
+
         </script>
 
     {% endblock %}

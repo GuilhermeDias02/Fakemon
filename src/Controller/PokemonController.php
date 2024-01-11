@@ -28,19 +28,27 @@ class PokemonController extends AbstractController
               return $this->render('pokemon/index.html.twig');        
           }
 
-
-          #[Route('/pokemonLoading', name: 'app_loading')]
-
-          public function chargement(): Response
-          {   
-  
-                return $this->render('LoadingApi/LoadingPokemon.html.twig');
-    }
-    #[Route('/l', name: 'app_l')]
+    #[Route('/list', name: 'pokemon_list')]
   
     public function load(): Response
     {   
-          return $this->render('LoadingApi/dd.html.twig');
+          return $this->render('LoadingApi/index.html.twig');
 }
+
+#[Route('/add', name: 'pokemon_add')]
+  
+public function add(): Response
+{   
+      return $this->render('LoadingApi/add.html.twig');
+}
+
+#[Route('/pokemon/modify/{id?}', name: 'pokemon_modify')]
+public function modify($id): Response
+{
+    return $this->render('LoadingApi/modify.html.twig', [
+        'id' => $id
+    ]);
+}
+
 
   }
