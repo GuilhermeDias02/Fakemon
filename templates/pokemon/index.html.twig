@@ -2,6 +2,33 @@
 
 {% block title %}Hello PokemonController!{% endblock %}
 
+
+{% block javascripts %}
+    <script>
+        {% block script %}
+                // Fonction pour effectuer l'appel API
+                function fetchPokemons() {
+                    fetch('http://127.0.0.1:8000/api/pokema') // Remplacez 'URL_DE_VOTRE_API' par l'URL réelle de votre API
+                        .then(response => response.json())
+                        .then(data => {
+                            // Mettez à jour la variable pokemons avec les données de l'API
+                            var pokemons = data; // Assurez-vous que la structure des données correspond à ce que vous attendez
+                            
+                            // Utilisez la variable pokemons comme nécessaire
+                            console.log("Pokemons récupérés depuis l'API :", pokemons);
+                            
+                            // Ajoutez ici le code pour manipuler les données des pokemons et les afficher dans votre interface
+                        })
+                        .catch(error => console.error('Erreur lors de la récupération des pokemons depuis l\'API:', error));
+                }
+
+                // Appel de la fonction fetchPokemons au chargement du DOM
+                fetchPokemons();
+        {% endblock %}
+    </script>
+{% endblock %}
+
+
 {% block body %}
 <style>
 
@@ -131,5 +158,4 @@ background-color: #a5533a;
 </div>
 
 {% endblock %}
-
 

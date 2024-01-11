@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+{% block title %}test!{% endblock %}
+        {% block body %}{% endblock %}
+
+
+{% block javascripts %}
+        {% block script %}
+                // Fonction pour effectuer l'appel API
+                function fetchPokemons() {
+                    fetch('http://127.0.0.1:8000/api/pokema') // Remplacez 'URL_DE_VOTRE_API' par l'URL réelle de votre API
+                        .then(response => response.json())
+                        .then(data => {
+                            // Mettez à jour la variable pokemons avec les données de l'API
+                            var pokemons = data; // Assurez-vous que la structure des données correspond à ce que vous attendez
+                            
+                            // Utilisez la variable pokemons comme nécessaire
+                            console.log("Pokemons récupérés depuis l'API :", pokemons);
+                            
+                           var redirectUrl = "{{ path('app_pokemon') }}";
+
+                     /*   // Ajoutez les données des pokémons à l'URL
+                        var pokemonData = pokemons;
+                        redirectUrl += '?pokemons=' + pokemonData;
+
+                        // Effectuez la redirection
+                       // window.location.href = redirectUrl;
+                        })
+                        .catch(error => console.error('Erreur lors de la récupération des pokemons depuis l\'API:', error));
+             
+                }
+
+               
+                fetchPokemons();
+        {% endblock %}
+{% endblock %}

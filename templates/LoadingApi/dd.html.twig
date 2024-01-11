@@ -1,0 +1,155 @@
+{% extends 'base.html.twig' %}
+
+
+        {% block body %}
+            <div id="pokemonListContainer"></div>
+{% endblock %}
+
+{% block javascripts %}
+    {% block script %}
+        <script>
+
+        document.addEventListener("DOMContentLoaded", function() {
+            // Initialisez un tableau pour stocker les données des pokemons
+             var titleElement = document.createElement('h2');
+                titleElement.textContent = "Test Réussi";
+            var pokemons = [];
+
+            function fetchPokemons() {
+                fetch('http://127.0.0.1:8000/api/pokema')
+                    .then(response => response.json())
+                    .then(data => {
+                        // Mettez à jour la variable pokemons avec les données de l'API
+                        pokemons = data['hydra:member']; // Assurez-vous que la structure des données correspond à ce que vous attendez
+                        console.log("Pokemons récupérés depuis l'API :", pokemons);
+   
+                        // Ajoutez ici le code pour manipuler les données des pokemons et les afficher dans votre interface
+                        displayPokemonsList(pokemons);
+                    })
+                    .catch(error => console.error('Erreur lors de la récupération des pokemons depuis l\'API:', error));
+            }
+
+         // ...
+
+// ...
+
+// ...
+// ...
+
+// ...
+
+
+function displayPokemonsList(pokemons) {
+    // Créez un élément de tableau (table)
+    var pokemonTableElement = document.createElement('table');
+    pokemonTableElement.className = 'pokemon-table';
+
+    // Créez l'en-tête du tableau
+    var headerRow = document.createElement('tr');
+    for (var prop in pokemons[0]) {
+        var headerCell = document.createElement('th');
+        headerCell.textContent = prop;
+        headerRow.appendChild(headerCell);
+    }   
+
+    var actionsHeaderCell = document.createElement('th');
+    actionsHeaderCell.textContent = 'Actions';
+    headerRow.appendChild(actionsHeaderCell);
+
+    pokemonTableElement.appendChild(headerRow);
+
+    // Parcourez le tableau de pokemons et créez des lignes pour chaque pokemon
+    pokemons.forEach(function (pokemon) {
+        var dataRow = document.createElement('tr');
+
+        // Pour chaque propriété du pokemon, créez une cellule de données
+        for (var prop in pokemon) {
+            var dataCell = document.createElement('td');
+            dataCell.textContent = pokemon[prop];
+            dataRow.appendChild(dataCell);
+        }
+
+        var actionsCell = document.createElement('td');
+
+      var deleteButton = document.createElement('button');
+        deleteButton.textContent = 'Supprimer';
+        deleteButton.addEventListener('click', function() {
+console.log(pokemon.name)        });
+         var editButton = document.createElement('button');
+    editButton.textContent = 'Modifier';
+    editButton.addEventListener('click', function () {
+        // Appel de la fonction pour modifier le pokemon avec l'ID correspondant
+        console.log('Modifier le pokemon avec ID :', pokemon.id);
+    });
+      var viewButton = document.createElement('button');
+    viewButton.textContent = 'Voir';
+    viewButton.addEventListener('click', function () {
+        // Appel de la fonction pour voir le pokemon avec l'ID correspondant
+        console.log('Voir le pokemon avec ID :', pokemon.id);
+    });
+        
+        
+        
+        
+        
+          deleteButton.style.marginRight = '2px';
+    viewButton.style.marginRight = '2px';
+        
+        
+          actionsCell.appendChild(deleteButton);
+    actionsCell.appendChild(viewButton);
+    actionsCell.appendChild(editButton);
+
+    dataRow.appendChild(actionsCell);
+
+    
+
+        // Ajoutez la ligne au tableau
+        pokemonTableElement.appendChild(dataRow);
+    });
+
+    // Ajoutez des styles de bordure
+    pokemonTableElement.style.borderCollapse = 'collapse';
+    pokemonTableElement.style.width = '100%';
+
+    // Style pour les cellules du tableau
+    var tableCells = pokemonTableElement.querySelectorAll('th, td');
+    tableCells.forEach(function (cell) {
+        cell.style.border = '1px solid #ddd';
+        cell.style.padding = '8px';
+        cell.style.textAlign = 'left';
+    });
+
+    // Sélectionnez l'élément HTML où vous souhaitez afficher le tableau
+    var containerElement = document.getElementById('pokemonListContainer');
+
+    // Vérifiez si l'élément existe avant de l'ajouter
+    if (containerElement) {
+        // Videz le contenu existant du conteneur
+        containerElement.innerHTML = '';
+
+        // Ajoutez le tableau au conteneur
+        containerElement.appendChild(pokemonTableElement);
+    }
+}
+
+// ...
+
+
+// ...
+
+
+// ...
+
+// ...
+
+
+// ...
+
+            // Appel de la fonction fetchPokemons au chargement du DOM
+            fetchPokemons();
+        });
+        </script>
+
+    {% endblock %}
+  {% endblock %}
