@@ -12,30 +12,15 @@ use Symfony\Component\HttpFoundation\Request;
 
 class PokemonController extends AbstractController
 {
-        #[Route('/pokemon/{pokemons?}', name: 'app_pokemon')]
 
-        public function index($pokemons,Request $request): Response
-        {
-          /*   
-          if ($request->attributes->has('pokemons')) {
-            $pokemons = json_decode(urldecode($request->attributes->get('pokemons')), true);
-        }
-    
-        // $pokemons devrait maintenant contenir les données décodées
-        dd($pokemons);      
-*/
-
-              return $this->render('pokemon/index.html.twig');        
-          }
-
-    #[Route('/list', name: 'pokemon_list')]
+    #[Route('/pokemon/list', name: 'pokemon_list')]
   
     public function load(): Response
     {   
           return $this->render('LoadingApi/index.html.twig');
 }
 
-#[Route('/add', name: 'pokemon_add')]
+#[Route('/pokemon/add', name: 'pokemon_add')]
   
 public function add(): Response
 {   
