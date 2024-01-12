@@ -49,10 +49,11 @@
         }
 
 
-function removeLeadingZeros(str) {
-    // remove 0 from idPokedex
-    return str.replace(/^0+/, '');
-}
+        function removeLeadingZeros(str) {
+            // remove 0 from idPokedex
+            return str.replace(/^0+/, '');
+        }
+
         // Function to handle form submission
         function submitForm(event) {
             event.preventDefault();
@@ -71,7 +72,6 @@ function removeLeadingZeros(str) {
                 }
             });
 
-
             var pokemonId = {{ id }}; 
 
             fetch(`http://127.0.0.1:8000/api/pokema/${pokemonId}`, {
@@ -81,11 +81,11 @@ function removeLeadingZeros(str) {
                 },
                 body: JSON.stringify(jsonFormData),
             })
-                .then(response => response.json())
-                .then(updatedData => {
-                     window.location.href = "{{ path('pokemon_list') }}";
-                })
-                .catch(error => console.error('Error updating Pokemon:', error));
+            .then(response => response.json())
+            .then(updatedData => {
+                    window.location.href = "{{ path('pokemon_list') }}";
+            })
+            .catch(error => console.error('Error updating Pokemon:', error));
         }
 
         var pokemonId = {{ id }}; 

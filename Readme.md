@@ -1,4 +1,4 @@
-Nous créons une structure API Pokedex avec les fonctionnalités de liste de Pokedex, de filtrage par génération/région, ainsi que la possibilité de connecter des dresseurs pour mettre à jour et gérer les Pokémon capturés.
+Nous créons une structure API Pokedex avec les fonctionnalités de liste de Pokedex et de filtrage par nom et type/région.
 
 1. **API de Gestion des Pokémon enregistrés :**
    - **Endpoints :**

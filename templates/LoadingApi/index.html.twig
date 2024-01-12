@@ -1,54 +1,51 @@
 {% extends 'base.html.twig' %}
 
-
-    {% block body %}
+{% block body %}
 
 <style>
-  .selected {
-    background-color: #4CAF50; 
-    color: white; 
-  }
+    .selected {
+        background-color: #4CAF50; 
+        color: white; 
+    }
 </style>
 
-        <h1>Pokemon Api</h1>
-        <div>
-<a href="{{ path('pokemon_add') }}">
-    <button class="button">Ajouter</button>
-</a>
+<h1>Pokemon Api</h1>
+<div>
+    <a href="{{ path('pokemon_add') }}">
+        <button class="button">Ajouter</button>
+    </a>
 </div>
 
-  <div class="container mt-5">
+<div class="container mt-5">
     <div class="row justify-content-center">
-      <div class="col-md-6">
-        <div class="input-group">
-          <input type="text" class="form-control typeahead" placeholder="Recherche...">
-          <div class="input-group-append">
-            <button class="btn btn-outline-secondary" id="search-bar-pokemon" type="button">Rechercher</button>
-          </div>
+        <div class="col-md-6">
+            <div class="input-group">
+                <input type="text" class="form-control typeahead" placeholder="Recherche...">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" id="search-bar-pokemon" type="button">Rechercher</button>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
+</div>
 
 
 <div id="pokemonViewContainerSearch" style="max-width: 60%; margin: 0 auto;">
-            </div>
-
-
+</div>
 
 <div>
-<h2>Filtre par region</h2>
-<button class="button" id="allFilterRegion" class="region-filter-button selected">All</button>
+    <h2>Filtre par region</h2>
+    <button class="button" id="allFilterRegion" class="region-filter-button selected">All</button>
 
-<button class="button" id="johtoFilter" class="region-filter-button">Johto</button>
+    <button class="button" id="johtoFilter" class="region-filter-button">Johto</button>
 
-<button class="button" id="kantoFilter" class="region-filter-button">Kanto</button>
+    <button class="button" id="kantoFilter" class="region-filter-button">Kanto</button>
 
-<button class="button" id="sinnohFilter" class="region-filter-button">Sinnoh</button>
+    <button class="button" id="sinnohFilter" class="region-filter-button">Sinnoh</button>
 
-<button class="button" id="unysFilter" class="region-filter-button">Unys</button>
+    <button class="button" id="unysFilter" class="region-filter-button">Unys</button>
 
-<button class="button" id="nullFilterRegion" class="region-filter-button">Aucun (-)</button>
+    <button class="button" id="nullFilterRegion" class="region-filter-button">Aucun (-)</button>
 </div>
 
 <h2>Filtre par Type</h2>
@@ -63,25 +60,23 @@
 <button class="button" id="fighterFilter">Combat</button>
 
 <button class="button" id="nullFilterType">Aucun (-)</button>
-</div>
 
 
 <div id="pokemonListContainer" style="padding: 50px;">
-            </div>
+</div>
 
-
-    <button class="button-view">Clear</button>
+<button class="button-view">Clear</button>
 
 <div id="pokemonViewContainer" style="max-width: 60%; margin: 0 auto;">
 </div>
-  <!-- Bootstrap JS and Popper.js -->
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-  <!-- Bootstrap Typeahead JS -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.2/bootstrap3-typeahead.min.js"></script>
-  
+<!-- Bootstrap JS and Popper.js -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<!-- Bootstrap Typeahead JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.2/bootstrap3-typeahead.min.js"></script>
 
 {% endblock %}
 
@@ -90,78 +85,76 @@
         <script>
 
         document.addEventListener("DOMContentLoaded", function() {
-            
-      
 
-        var pokemons = [];
-        var apiUrl = 'http://127.0.0.1:8000/api/pokema';
-        var regionFilterButtons = document.querySelectorAll('.region-filter-button');
-        var filtreRegionVar = [];
-         var filtreTypeVar = [];
-   var suggestions = ['Pikachu', 'Pikachu2', 'Bulbasaur', 'Charmander', 'Squirtle', 'Mewtwo', 'Eevee', 'Snorlax'];
-         var tabPokemonSearch = [];
-         var idSearchPokemon ='';
-         fetchPokemonsList();
-         console.log(tabPokemonSearch);
-         console.log(suggestions);
+            var pokemons = [];
+            var apiUrl = 'http://127.0.0.1:8000/api/pokema';
+            var regionFilterButtons = document.querySelectorAll('.region-filter-button');
+            var filtreRegionVar = [];
+            var filtreTypeVar = [];
+            var suggestions = ['Pikachu', 'Pikachu2', 'Bulbasaur', 'Charmander', 'Squirtle', 'Mewtwo', 'Eevee', 'Snorlax'];
+            var tabPokemonSearch = [];
+            var idSearchPokemon ='';
 
-     
+            fetchPokemonsList();
 
+            console.log(tabPokemonSearch);
+            console.log(suggestions);
 
-    document.getElementById('allFilterRegion').classList.add('selected');
-    document.getElementById('allFilterType').classList.add('selected');
+            document.getElementById('allFilterRegion').classList.add('selected');
+            document.getElementById('allFilterType').classList.add('selected');
 
 
-    document.getElementById('search-bar-pokemon').addEventListener('click', function() {
-      viewPokemonSearch(idSearchPokemon);
-
-        });
-
-
-     document.querySelector('.button-view').addEventListener('click', function() {
-    var containerElementView = document.getElementById('pokemonViewContainer');
-    containerElementView.innerHTML = '';
-});
-
-        document.getElementById('allFilterRegion').addEventListener('click', function() {
-           filtreRegionVar = [];
-            fetchPokemons();
-    clearFilterRegion();
-    this.classList.add('selected');
-
-        });
+            document.getElementById('search-bar-pokemon').addEventListener('click', function() {
+                viewPokemonSearch(idSearchPokemon);
+            });
 
 
-    document.getElementById('johtoFilter').addEventListener('click', function() {
-          filtreRegionVar = [];
-        filtreRegionVar.push("johto");
+            document.querySelector('.button-view').addEventListener('click', function() {
+                var containerElementView = document.getElementById('pokemonViewContainer');
+                containerElementView.innerHTML = '';
+            });
+
+            document.getElementById('allFilterRegion').addEventListener('click', function() {
+                filtreRegionVar = [];
+                fetchPokemons();
+
+                clearFilterRegion();
+
+                this.classList.add('selected');
+            });
+
+
+            document.getElementById('johtoFilter').addEventListener('click', function() {
+                filtreRegionVar = [];
+                filtreRegionVar.push("johto");
                 fetchPokemonsByFilter();
 
-         clearFilterRegion();
+                clearFilterRegion();
 
-    this.classList.add('selected');
-      
+                this.classList.add('selected');
+            });
 
+            document.getElementById('nullFilterRegion').addEventListener('click', function() {
+                filtreRegionVar = [];
+                filtreRegionVar.push("-");
+                fetchPokemonsByFilter();
 
-    });
+                clearFilterRegion();
 
-       document.getElementById('nullFilterRegion').addEventListener('click', function() {
-            filtreRegionVar = [];
-            filtreRegionVar.push("-");
-            fetchPokemonsByFilter();
-            clearFilterRegion();
-            this.classList.add('selected');
-    });
+                this.classList.add('selected');
+            });
 
-        document.getElementById('kantoFilter').addEventListener('click', function() {
-            filtreRegionVar = [];
-            filtreRegionVar.push("kanto");
-            fetchPokemonsByFilter();
-            clearFilterRegion();
-            this.classList.add('selected');
-    });
+            document.getElementById('kantoFilter').addEventListener('click', function() {
+                filtreRegionVar = [];
+                filtreRegionVar.push("kanto");
+                fetchPokemonsByFilter();
 
-    document.getElementById('sinnohFilter').addEventListener('click', function() {
+                clearFilterRegion();
+
+                this.classList.add('selected');
+            });
+
+            document.getElementById('sinnohFilter').addEventListener('click', function() {
                 filtreRegionVar = [];
                 filtreRegionVar.push("sinnoh");
 
@@ -170,119 +163,118 @@
                 clearFilterRegion();
 
                 this.classList.add('selected');
-    });
+            });
 
-     document.getElementById('unysFilter').addEventListener('click', function() {
-            filtreRegionVar = [];
-            filtreRegionVar.push("unys");
-            fetchPokemonsByFilter();
-            clearFilterRegion();
-            this.classList.add('selected');
-    });
+            document.getElementById('unysFilter').addEventListener('click', function() {
+                filtreRegionVar = [];
+                filtreRegionVar.push("unys");
+                fetchPokemonsByFilter();
 
+                clearFilterRegion();
 
-        document.getElementById('allFilterType').addEventListener('click', function() {
-            filtreTypeVar = [];
-            fetchPokemons();
-            clearFilterType();
-            this.classList.add('selected');
-        
-    });
+                this.classList.add('selected');
+            });
 
 
-       document.getElementById('nullFilterType').addEventListener('click', function() {
-            filtreTypeVar = [];
-            filtreTypeVar.push("-");
-            fetchPokemonsByFilter();
-            clearFilterType();
-            this.classList.add('selected');
-    });
+            document.getElementById('allFilterType').addEventListener('click', function() {
+                filtreTypeVar = [];
+                fetchPokemons();
+
+                clearFilterType();
+
+                this.classList.add('selected');
+             });
 
 
-   
+            document.getElementById('nullFilterType').addEventListener('click', function() {
+                filtreTypeVar = [];
+                filtreTypeVar.push("-");
+                fetchPokemonsByFilter();
+                clearFilterType();
+                this.classList.add('selected');
+            });
 
-         document.getElementById('fireFilter').addEventListener('click', function() {
-            filtreTypeVar = [];
-            filtreTypeVar.push("fire");
-            fetchPokemonsByFilter();  
-            clearFilterType();
-            this.classList.add('selected');
-        });
+            document.getElementById('fireFilter').addEventListener('click', function() {
+                filtreTypeVar = [];
+                filtreTypeVar.push("fire");
+                fetchPokemonsByFilter();  
+                clearFilterType();
+                this.classList.add('selected');
+            });
 
-        document.getElementById('waterFilter').addEventListener('click', function() {
-        filtreTypeVar = [];
-        filtreTypeVar.push("water");
-        fetchPokemonsByFilter();
-        
-         clearFilterType();
+            document.getElementById('waterFilter').addEventListener('click', function() {
+                filtreTypeVar = [];
+                filtreTypeVar.push("water");
+                fetchPokemonsByFilter();
+                
+                clearFilterType();
 
-    this.classList.add('selected');
-    });
+                this.classList.add('selected');
+            });
 
-        document.getElementById('plantFilter').addEventListener('click', function() {
-        filtreTypeVar = [];
-        filtreTypeVar.push("plant");
-        fetchPokemonsByFilter();
-        
-         clearFilterType();
+            document.getElementById('plantFilter').addEventListener('click', function() {
+                filtreTypeVar = [];
+                filtreTypeVar.push("plant");
+                fetchPokemonsByFilter();
 
-         this.classList.add('selected');
-    });
+                clearFilterType();
 
-        document.getElementById('fighterFilter').addEventListener('click', function() {
-        filtreTypeVar = [];
-        filtreTypeVar.push("fighter");
-        fetchPokemonsByFilter();
-        
-         clearFilterType();
+                this.classList.add('selected');
+            });
 
-    this.classList.add('selected');
-    });
+            document.getElementById('fighterFilter').addEventListener('click', function() {
+                filtreTypeVar = [];
+                filtreTypeVar.push("fighter");
+                fetchPokemonsByFilter();
+            
+                clearFilterType();
+
+                this.classList.add('selected');
+            });
 
 
-    function clearFilterRegion() {
-document.getElementById('allFilterRegion').classList.remove('selected');
-document.getElementById('sinnohFilter').classList.remove('selected');
-document.getElementById('nullFilterRegion').classList.remove('selected');
-document.getElementById('kantoFilter').classList.remove('selected');
-document.getElementById('johtoFilter').classList.remove('selected');
-document.getElementById('unysFilter').classList.remove('selected');
-
-}
-
-    function clearFilterType() {
-document.getElementById('allFilterType').classList.remove('selected');
-document.getElementById('fireFilter').classList.remove('selected');
-document.getElementById('nullFilterType').classList.remove('selected');
-document.getElementById('waterFilter').classList.remove('selected');
-document.getElementById('plantFilter').classList.remove('selected');
-document.getElementById('fighterFilter').classList.remove('selected');
-
-}
-
-function fetchPokemonsByFilter() {
-    fetch(apiUrl)
-        .then(response => response.json())
-        .then(data => {
-            console.log(filtreRegionVar[0]);
-            if(filtreRegionVar.length > 0 && filtreTypeVar.length > 0){
-            pokemons = data['hydra:member'].filter(pokemon => 
-    pokemon.region === filtreRegionVar[0] && pokemon.type === filtreTypeVar[0]
-);
-            }else if(filtreRegionVar.length > 0 && filtreTypeVar.length == 0){
-            pokemons = data['hydra:member'].filter(pokemon => pokemon.region === filtreRegionVar[0]);
-            }else if(filtreRegionVar.length == 0 && filtreTypeVar.length > 0){
-            pokemons = data['hydra:member'].filter(pokemon => pokemon.type === filtreTypeVar[0]);
-            }else{
-            pokemons = data['hydra:member']; 
-
+            function clearFilterRegion() {
+                document.getElementById('allFilterRegion').classList.remove('selected');
+                document.getElementById('sinnohFilter').classList.remove('selected');
+                document.getElementById('nullFilterRegion').classList.remove('selected');
+                document.getElementById('kantoFilter').classList.remove('selected');
+                document.getElementById('johtoFilter').classList.remove('selected');
+                document.getElementById('unysFilter').classList.remove('selected');
             }
-            pokemons.sort((a, b) => a.idNat - b.idNat);
 
-            displayPokemonsList(pokemons);
-        })
-        .catch(error => console.error(`Erreur lors de la récupération des pokemons depuis l'API avec filtre ':`, error));
-}
+            function clearFilterType() {
+                document.getElementById('allFilterType').classList.remove('selected');
+                document.getElementById('fireFilter').classList.remove('selected');
+                document.getElementById('nullFilterType').classList.remove('selected');
+                document.getElementById('waterFilter').classList.remove('selected');
+                document.getElementById('plantFilter').classList.remove('selected');
+                document.getElementById('fighterFilter').classList.remove('selected');
+            }
+
+            function fetchPokemonsByFilter() {
+                fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    console.log(filtreRegionVar[0]);
+                    if(filtreRegionVar.length > 0 && filtreTypeVar.length > 0){
+                    pokemons = data['hydra:member'].filter(pokemon => 
+                        pokemon.region === filtreRegionVar[0] && pokemon.type === filtreTypeVar[0]
+                    );
+                    }else if(filtreRegionVar.length > 0 && filtreTypeVar.length == 0){
+                        pokemons = data['hydra:member'].filter(pokemon => pokemon.region === filtreRegionVar[0]);
+                    }else if(filtreRegionVar.length == 0 && filtreTypeVar.length > 0){
+                        pokemons = data['hydra:member'].filter(pokemon => pokemon.type === filtreTypeVar[0]);
+                    }else{
+                        pokemons = data['hydra:member']; 
+
+                    }
+
+                    pokemons.sort((a, b) => a.idNat - b.idNat);
+
+                    displayPokemonsList(pokemons);
+                })
+                .catch(error => console.error(`Erreur lors de la récupération des pokemons depuis l'API avec filtre ':`, error));
+            }
 
             function fetchPokemons() {
                 fetch(apiUrl)
@@ -290,271 +282,254 @@ function fetchPokemonsByFilter() {
                     .then(data => {
                         pokemons = data['hydra:member']; 
                         console.log("Pokemons récupérés depuis l'API :", pokemons);
-   
-                         pokemons.sort((a, b) => a.idNat - b.idNat);
+
+                        pokemons.sort((a, b) => a.idNat - b.idNat);
                         // affichage des données
                         displayPokemonsList(pokemons);
                     })
                     .catch(error => console.error('Erreur lors de la récupération des pokemons depuis l\'API:', error));
             }
 
-        
-         function fetchPokemonsList() {
+            function fetchPokemonsList() {
                 fetch(apiUrl)
                     .then(response => response.json())
                     .then(data => {
-                         var pokemonList = data['hydra:member']; 
+                        var pokemonList = data['hydra:member']; 
                         console.log("Pokemons récupérés depuis l'API :", pokemonList);
-                   
 
                         var simplifiedList = pokemonList.map(pokemon => ({
-                        name: pokemon.name,
-                        id: pokemon.id
-            }));
+                            name: pokemon.name,
+                            id: pokemon.id
+                        }));
 
-            tabPokemonSearch = simplifiedList;
+                        tabPokemonSearch = simplifiedList;
 
-            $('.typeahead').typeahead({
-                source: tabPokemonSearch
-                });
+                        $('.typeahead').typeahead({
+                            source: tabPokemonSearch
+                        });
 
-            $('.typeahead').on('change', function () {
-                var selectedPokemon = $('.typeahead').typeahead('getActive');
+                        $('.typeahead').on('change', function () {
+                            var selectedPokemon = $('.typeahead').typeahead('getActive');
 
-                if (selectedPokemon) {
-                    idSearchPokemon = selectedPokemon.id;
-                }
+                            if (selectedPokemon) {
+                                idSearchPokemon = selectedPokemon.id;
+                            }
 
-            });
-
-            
-            })
-            .catch(error => console.error('Erreur lors de la récupération des pokemons depuis l\'API:', error));
-    }
-
-
-function displayPokemonsList(pokemons) {
-    var pokemonTableElement = document.createElement('table');
-    pokemonTableElement.className = 'pokemon-table';
-
-  
-    // Créez l'en-tête du tableau
-    var headerRow = document.createElement('tr');
-    for (var prop in pokemons[0]) {
-        var headerCell = document.createElement('th');
-        headerCell.textContent = prop;
-        headerRow.appendChild(headerCell);
-    }   
-
-    var actionsHeaderCell = document.createElement('th');
-    actionsHeaderCell.textContent = 'Actions';
-    headerRow.appendChild(actionsHeaderCell);
-
-    pokemonTableElement.appendChild(headerRow);
-
-    // Parcourez le tableau de pokemons et créez des lignes pour chaque pokemon
-    pokemons.forEach(function (pokemon) {
-        var dataRow = document.createElement('tr');
-
-        // Pour chaque propriété du pokemon, créez une cellule de données
-        for (var prop in pokemon) {
-            var dataCell = document.createElement('td');
-            dataCell.textContent = pokemon[prop];
-            dataRow.appendChild(dataCell);
-        }
-
-        var actionsCell = document.createElement('td');
-
-      var deleteButton = document.createElement('button');
-      deleteButton.textContent = 'Supprimer';
-      deleteButton.addEventListener('click', function() {
-        deletePokemon(pokemon.id);
-        pokemonTableElement.deleteRow(dataRow.rowIndex);
-  });
-
-
-    var editButton = document.createElement('button');
-    editButton.textContent = 'Modifier';
-    editButton.addEventListener('click', function () {
-        // Appel de la fonction pour modifier le pokemon avec l'ID correspondant
-        console.log('Modifier le pokemon avec ID :', pokemon.id);
-            window.location.href = "{{ path('pokemon_modify', {id: 'POKEMON_ID'}) }}".replace('POKEMON_ID', pokemon.id);
-
-    });
-      var viewButton = document.createElement('button');
-    viewButton.textContent = 'Voir';
-    viewButton.addEventListener('click', function () {
-        // Appel de la fonction pour voir le pokemon avec l'ID correspondant
-        console.log('Voir le pokemon avec ID :', pokemon.id);
-                viewPokemon(pokemon.id);
-
-
-    });
-        
-        deleteButton.style.marginRight = '2px';
-        viewButton.style.marginRight = '2px'; 
-            
-        actionsCell.appendChild(deleteButton);
-        actionsCell.appendChild(viewButton);
-        actionsCell.appendChild(editButton);
-
-        dataRow.appendChild(actionsCell);
-
-    
-        pokemonTableElement.appendChild(dataRow);
-    });
-
-
-
-    // Ajoutez des styles de bordure
-    pokemonTableElement.style.borderCollapse = 'collapse';
-    pokemonTableElement.style.width = '100%';
-
-    // Style pour les cellules du tableau
-    var tableCells = pokemonTableElement.querySelectorAll('th, td');
-    tableCells.forEach(function (cell) {
-        cell.style.border = '1px solid #ddd';
-        cell.style.padding = '5px';
-        cell.style.textAlign = 'left';
-    });
-
-    // Sélectionnez l'élément HTML où vous souhaitez afficher le tableau
-    var containerElement = document.getElementById('pokemonListContainer');
-
-
-    // Vérifiez si l'élément existe avant de l'ajouter
-    if (containerElement) {
-        
-        containerElement.innerHTML = '';
-        containerElement.appendChild(pokemonTableElement);
-
-        if (pokemons.length === 0) {
-                var noPokemonRow = document.createElement('tr');
-                var noPokemonCell = document.createElement('td');
-                noPokemonCell.colSpan = 2; 
-                noPokemonCell.textContent = 'Aucun Pokémon trouvé';
-                noPokemonRow.appendChild(noPokemonCell);
-                containerElement.appendChild(noPokemonRow);
+                        });
+                    })
+                    .catch(error => console.error('Erreur lors de la récupération des pokemons depuis l\'API:', error));
             }
 
 
-    }
-}
-            fetchPokemons();
+            function displayPokemonsList(pokemons) {
+                var pokemonTableElement = document.createElement('table');
+                pokemonTableElement.className = 'pokemon-table';
 
+                // Créez l'en-tête du tableau
+                var headerRow = document.createElement('tr');
+                for (var prop in pokemons[0]) {
+                    var headerCell = document.createElement('th');
+                    headerCell.textContent = prop;
+                    headerRow.appendChild(headerCell);
+                }
+
+                var actionsHeaderCell = document.createElement('th');
+                actionsHeaderCell.textContent = 'Actions';
+                headerRow.appendChild(actionsHeaderCell);
+
+                pokemonTableElement.appendChild(headerRow);
+
+                // Parcourez le tableau de pokemons et créez des lignes pour chaque pokemon
+                pokemons.forEach(function (pokemon) {
+                    var dataRow = document.createElement('tr');
+
+                    // Pour chaque propriété du pokemon, créez une cellule de données
+                    for (var prop in pokemon) {
+                        var dataCell = document.createElement('td');
+                        dataCell.textContent = pokemon[prop];
+                        dataRow.appendChild(dataCell);
+                    }
+
+                    var actionsCell = document.createElement('td');
+
+                    var deleteButton = document.createElement('button');
+                    deleteButton.textContent = 'Supprimer';
+                    deleteButton.addEventListener('click', function() {
+                        deletePokemon(pokemon.id);
+                        pokemonTableElement.deleteRow(dataRow.rowIndex);
+                    });
+
+                    var editButton = document.createElement('button');
+                    editButton.textContent = 'Modifier';
+                    editButton.addEventListener('click', function () {
+                        // Appel de la fonction pour modifier le pokemon avec l'ID correspondant
+                        console.log('Modifier le pokemon avec ID :', pokemon.id);
+                        window.location.href = "{{ path('pokemon_modify', {id: 'POKEMON_ID'}) }}".replace('POKEMON_ID', pokemon.id);
+
+                    });
+
+                    var viewButton = document.createElement('button');
+                    viewButton.textContent = 'Voir';
+                    viewButton.addEventListener('click', function () {
+                        // Appel de la fonction pour voir le pokemon avec l'ID correspondant
+                        console.log('Voir le pokemon avec ID :', pokemon.id);
+                        viewPokemon(pokemon.id);
+                    });
+                    
+                    deleteButton.style.marginRight = '2px';
+                    viewButton.style.marginRight = '2px'; 
+                        
+                    actionsCell.appendChild(deleteButton);
+                    actionsCell.appendChild(viewButton);
+                    actionsCell.appendChild(editButton);
+
+                    dataRow.appendChild(actionsCell);
+
+                
+                    pokemonTableElement.appendChild(dataRow);
+                });
+
+
+
+                // Ajoutez des styles de bordure
+                pokemonTableElement.style.borderCollapse = 'collapse';
+                pokemonTableElement.style.width = '100%';
+
+                // Style pour les cellules du tableau
+                var tableCells = pokemonTableElement.querySelectorAll('th, td');
+                tableCells.forEach(function (cell) {
+                    cell.style.border = '1px solid #ddd';
+                    cell.style.padding = '5px';
+                    cell.style.textAlign = 'left';
+                });
+
+                // Sélectionnez l'élément HTML où vous souhaitez afficher le tableau
+                var containerElement = document.getElementById('pokemonListContainer');
+
+                // Vérifiez si l'élément existe avant de l'ajouter
+                if (containerElement) {
+                    containerElement.innerHTML = '';
+                    containerElement.appendChild(pokemonTableElement);
+
+                    if (pokemons.length === 0) {
+                            var noPokemonRow = document.createElement('tr');
+                            var noPokemonCell = document.createElement('td');
+                            noPokemonCell.colSpan = 2; 
+                            noPokemonCell.textContent = 'Aucun Pokémon trouvé';
+                            noPokemonRow.appendChild(noPokemonCell);
+                            containerElement.appendChild(noPokemonRow);
+                        }
+                }
+            }
             
+            fetchPokemons();
         });
 
 
-function deletePokemon(pokemonId) {
-  var isConfirmed = confirm("Voulez-vous vraiment supprimer ce Pokémon ?");
+        function deletePokemon(pokemonId) {
+            var isConfirmed = confirm("Voulez-vous vraiment supprimer ce Pokémon ?");
 
-  if (isConfirmed) {
-    fetch(`http://127.0.0.1:8000/api/pokema/${pokemonId}`, {
-      method: 'DELETE',
-      headers: {
-          'Content-Type': 'application/ld+json', 
-      },
-    })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
+            if (isConfirmed) {
+                fetch(`http://127.0.0.1:8000/api/pokema/${pokemonId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/ld+json', 
+                    },
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    console.log(`Pokemon with ID ${pokemonId} deleted successfully`);
+
+                })
+                .catch(error => console.error('Error deleting Pokemon:', error));
+            }
         }
-        console.log(`Pokemon with ID ${pokemonId} deleted successfully`);
 
-      })
-      .catch(error => console.error('Error deleting Pokemon:', error));
-  }
-}
+        function viewPokemon(id) {
+            var containerElementView = document.getElementById('pokemonViewContainer');
 
-function viewPokemon(id) {
-        var containerElementView = document.getElementById('pokemonViewContainer');
-
-    fetch(`http://127.0.0.1:8000/api/pokema/${id}`, {
-      method: 'GET',
-      headers: {
-          'Content-Type': 'application/ld+json', 
-      },
-    })        .then(response => response.json())
-        .then(data => {
-            var modal = document.createElement('div');
-            modal.innerHTML = `
-                <div class="modal-dialog" role="document" id="${data.name}#${data.idPokedex}">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">${data.name} - #${data.idPokedex}</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <p>ID: ${data.id}</p>
-                            <p>Type: ${data.type}</p>
-                            <p>Type 2: ${data.type2 || '-'}</p>
-                            <!-- Add more details here based on your data structure -->
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            fetch(`http://127.0.0.1:8000/api/pokema/${id}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/ld+json', 
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                var modal = document.createElement('div');
+                modal.innerHTML = `
+                    <div class="modal-dialog" role="document" id="${data.name}#${data.idPokedex}">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">${data.name} - #${data.idPokedex}</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p>ID: ${data.id}</p>
+                                <p>Type: ${data.type}</p>
+                                <p>Type 2: ${data.type2 || '-'}</p>
+                                <!-- Add more details here based on your data structure -->
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
                         </div>
                     </div>
-                </div>
-            `;
-                    containerElementView.appendChild(modal);
+                `;
+                containerElementView.appendChild(modal);
+            })
         }
-    )
-}
 
 
-function viewPokemonSearch(id) {
-    var containerElementView = document.getElementById('pokemonViewContainerSearch');
-    containerElementView.innerHTML='';
-    fetch(`http://127.0.0.1:8000/api/pokema/${id}`, {
-      method: 'GET',
-      headers: {
-          'Content-Type': 'application/ld+json', 
-      },
-    })        .then(response => response.json())
-        .then(data => {
-            var classPok = '.'+data.name+'-'+data.idPokedex;
-            var modal = document.createElement('div');
-            modal.innerHTML = `
-                <div class="modal-dialog" role="document" id="${data.name}#${data.idPokedex}">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">${data.name} - #${data.idPokedex}</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <p>ID: ${data.id}</p>
-                            <p>Type: ${data.type}</p>
-                            <p>Type 2: ${data.type2 || '-'}</p>
-                            <!-- Add more details here based on your data structure -->
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary ${data.name}-${data.idPokedex}" data-dismiss="modal">Close</button>
+        function viewPokemonSearch(id) {
+            var containerElementView = document.getElementById('pokemonViewContainerSearch');
+            containerElementView.innerHTML='';
+            fetch(`http://127.0.0.1:8000/api/pokema/${id}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/ld+json', 
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                var classPok = '.'+data.name+'-'+data.idPokedex;
+                var modal = document.createElement('div');
+                modal.innerHTML = `
+                    <div class="modal-dialog" role="document" id="${data.name}#${data.idPokedex}">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">${data.name} - #${data.idPokedex}</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p>ID: ${data.id}</p>
+                                <p>Type: ${data.type}</p>
+                                <p>Type 2: ${data.type2 || '-'}</p>
+                                <!-- Add more details here based on your data structure -->
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary ${data.name}-${data.idPokedex}" data-dismiss="modal">Close</button>
+                            </div>
                         </div>
                     </div>
-                </div>
-            `;
-                    containerElementView.appendChild(modal);
-        document.querySelector(".close").addEventListener('click', function () {
-                containerElementView.innerHTML = "";
-                });
-                 document.querySelector(classPok).addEventListener('click', function () {
-                containerElementView.innerHTML = "";
-                });
-       
-       
+                `;
+                containerElementView.appendChild(modal);
+                document.querySelector(".close").addEventListener('click', function () {
+                    containerElementView.innerHTML = "";
+                    });
+                    document.querySelector(classPok).addEventListener('click', function () {
+                        containerElementView.innerHTML = "";
+                    });
+            })
         }
-
-
-
-        )
-}
 
         </script>
 
     {% endblock %}
-  {% endblock %}
+{% endblock %}
