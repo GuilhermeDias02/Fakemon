@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 
-        {% block body %}
+    {% block body %}
 
 <style>
   .selected {
@@ -278,6 +278,7 @@ function fetchPokemonsByFilter() {
 
             }
             pokemons.sort((a, b) => a.idNat - b.idNat);
+
             displayPokemonsList(pokemons);
         })
         .catch(error => console.error(`Erreur lors de la récupération des pokemons depuis l'API avec filtre ':`, error));
