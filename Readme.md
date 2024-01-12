@@ -26,5 +26,3 @@ Nous créons une structure API Pokedex avec les fonctionnalités de liste de Pok
      - `GET /trainers/{trainerId}/captured-pokemon`: Récupère la liste des Pokémon capturés par un dresseur.
      - `POST /trainers/{trainerId}/captured-pokemon`: Ajoute un nouveau Pokémon capturé au Pokedex du dresseur.
      - `DELETE /trainers/{trainerId}/captured-pokemon/{pokemonId}`: Supprime un Pokémon capturé du Pokedex du dresseur.
-
-
