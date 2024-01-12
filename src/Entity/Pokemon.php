@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\CollectionOperationInterface;
 use ApiPlatform\Metadata\Post;
@@ -11,6 +13,11 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PokemonRepository::class)]
 #[ApiResource]
+#[ApiFilter(SearchFilter::class, properties: ['type' => 'exact'])]
+#[ApiFilter(SearchFilter::class, properties: ['idNat' => 'exact'])]
+
+#[ApiFilter(SearchFilter::class, properties: ['idRegion.id' => 'exact'])]
+
 class Pokemon
 {
     #[ORM\Id]
@@ -33,11 +40,12 @@ class Pokemon
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $idPokedex = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $region = null;
-
     #[ORM\Column(nullable: true)]
     private ?int $idNat = null;
+
+    #[ORM\ManyToOne(inversedBy: 'pokemon')]
+  
+    private ?Region $idRegion = null;
 
     public function getId(): ?int
     {
@@ -104,18 +112,6 @@ class Pokemon
         return $this;
     }
 
-    public function getRegion(): ?string
-    {
-        return $this->region;
-    }
-
-    public function setRegion(?string $region): static
-    {
-        $this->region = $region;
-
-        return $this;
-    }
-
     public function getIdNat(): ?int
     {
         return $this->idNat;
@@ -124,6 +120,18 @@ class Pokemon
     public function setIdNat(?int $idNat): static
     {
         $this->idNat = $idNat;
+
+        return $this;
+    }
+
+    public function getIdRegion(): ?Region
+    {
+        return $this->idRegion;
+    }
+
+    public function setIdRegion(?Region $idRegion): static
+    {
+        $this->idRegion = $idRegion;
 
         return $this;
     }
