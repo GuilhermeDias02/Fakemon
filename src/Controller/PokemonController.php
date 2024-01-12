@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 class PokemonController extends AbstractController
 {
 
-    #[Route('/list', name: 'pokemon_list')]
+    #[Route('/', name: 'pokemon_list')]
   
     public function load(): Response
     {   

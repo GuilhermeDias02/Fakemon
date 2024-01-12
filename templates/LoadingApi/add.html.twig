@@ -5,9 +5,8 @@
 {% block body %}
 
 
+<div style="padding-left: 150px;padding-right: 150px;padding-top: 50px;padding-bottom: 50px;">
 
-
-<!-- Your form HTML -->
 <form id="pokemonForm">
   <div class="form-group">
     <label for="name">Nom</label>
@@ -35,24 +34,20 @@
   </div>
   <button type="submit" class="btn btn-primary">Submit</button>
 </form>
+<div>
 
-<!-- Your script -->
 <script>
   document.addEventListener("DOMContentLoaded", function () {
-    // Add an event listener to the form
     document.getElementById("pokemonForm").addEventListener("submit", function (event) {
-      // Prevent the default form submission
       event.preventDefault();
 
-function removeLeadingZeros(str) {
-    // Utiliser une expression régulière pour supprimer les zéros à gauche
-    return str.replace(/^0+/, '');
-}
+    function removeLeadingZeros(str) {
+        return str.replace(/^0+/, '');
+    }
 
 
 
 
-      // Get the input values
       var name = document.getElementById("name").value || '-';
       var type = document.getElementById("type").value || '-';
       var region = document.getElementById("region").value || '-';
@@ -60,7 +55,6 @@ function removeLeadingZeros(str) {
       var idPokedex = document.getElementById("idPokedex").value || '-';
       var image = document.getElementById("image").value || '-';
       var idNat = parseInt(removeLeadingZeros(idPokedex));
-      // Create a new Pokemon object
       var newPokemon = {
         name: name,
         type: type,
@@ -71,20 +65,17 @@ function removeLeadingZeros(str) {
         region: region
       };
 
-      // Make a POST request to your API endpoint
-      fetch('http://127.0.0.1:8000/api/pokemon', {
+      fetch('http://127.0.0.1:8000/api/pokema', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/ld+json', // Set the content type to application/ld+json
+          'Content-Type': 'application/ld+json', 
         },
         body: JSON.stringify(newPokemon),
       })
       .then(response => response.json())
       .then(data => {
-        // Handle the response data as needed
-        console.log('Pokemon created:', data);
+       window.location.href = "{{ path('pokemon_list') }}";
 
-        // You can redirect to another page or update the UI here
       })
       .catch(error => console.error('Error creating Pokemon:', error));
     });
