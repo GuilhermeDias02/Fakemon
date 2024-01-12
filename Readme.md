@@ -8,10 +8,10 @@ Nous créons une structure API Pokedex avec les fonctionnalités de liste de Pok
 
 2. **Recherche dans le Porkedex:**
    - **Endpoints :**
-     - Barre de recherche: filtre les pokemons affichés en fonction de leur nom.
-     - Autocompletion: proposer des noms de pokemon en cours d'écriture.
+     - `Barre de recherche`: filtre les pokemons affichés en fonction de leur nom.
+     - `Autocompletion`: proposer des noms de pokemon en cours d'écriture.
 
 3. **Boutons de filtrage :**
    - **Endpoints :**
-     - Filtre Region: Filtre les Pokémons actuellement affichés par région.
-     - Filtre Type: Filtre les Pokémons actuellement affichés par génération.
+     - `Filtre Region`: Filtre les Pokémons actuellement affichés par région.
+     - `Filtre Type`: Filtre les Pokémons actuellement affichés par génération.
