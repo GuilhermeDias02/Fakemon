@@ -2,16 +2,14 @@
 
 {% block body %}
 
-    <div id="pokemonFormContainer"></div>
+    <div id="pokemonFormContainer" style="padding-left: 150px;padding-right: 150px;padding-top: 50px;padding-bottom: 50px;"></div>
 
     <script>
-        // Function to fetch Pokemon data by ID
         function fetchPokemonById(id) {
             return fetch(`http://127.0.0.1:8000/api/pokema/${id}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/ld+json',
-                    // You might need to include additional headers like authentication
                 },
             }).then(response => response.json());
         }
@@ -50,51 +48,52 @@
             return formElement;
         }
 
+
+function removeLeadingZeros(str) {
+    // remove 0 from idPokedex
+    return str.replace(/^0+/, '');
+}
         // Function to handle form submission
         function submitForm(event) {
             event.preventDefault();
-
-            // Get the form data
             var formData = new FormData(event.target);
-
-            // Convert FormData to JSON object
+            var idPokedexValue = formData.get('idPokedex');
+            var idNat = parseInt(removeLeadingZeros(idPokedexValue));
+            formData.set('idNat', idNat);
+            console.log(formData.get('idNat'));
             var jsonFormData = {};
+            console.log(jsonFormData);
             formData.forEach((value, key) => {
-                jsonFormData[key] = value;
+                if (key === "idNat") {
+                    jsonFormData[key] = typeof value === 'number' ? value : parseInt(value, 10);
+                } else {
+                    jsonFormData[key] = value;
+                }
             });
 
-            // Get the Pokemon ID from the server (you need to set this dynamically)
-            var pokemonId = {{ id }}; // Replace with your dynamic ID
 
-            // Send a PATCH request with the updated data
+            var pokemonId = {{ id }}; 
+
             fetch(`http://127.0.0.1:8000/api/pokema/${pokemonId}`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/merge-patch+json',
-                    // You might need to include additional headers like authentication
                 },
                 body: JSON.stringify(jsonFormData),
             })
                 .then(response => response.json())
                 .then(updatedData => {
-                    console.log('Pokemon updated successfully:', updatedData);
+                     window.location.href = "{{ path('pokemon_list') }}";
                 })
                 .catch(error => console.error('Error updating Pokemon:', error));
         }
 
-        // Get the Pokemon ID from the server (you need to set this dynamically)
-        var pokemonId = {{ id }}; // Replace with your dynamic ID
+        var pokemonId = {{ id }}; 
 
-        // Fetch Pokemon data by ID
         fetchPokemonById(pokemonId)
             .then(data => {
-                // Create a form with Pokemon data
                 var form = createPokemonForm(data);
-
-                // Add an event listener for form submission
                 form.addEventListener('submit', submitForm);
-
-                // Append the form to the container
                 document.getElementById('pokemonFormContainer').appendChild(form);
             })
             .catch(error => console.error('Error fetching Pokemon data:', error));
