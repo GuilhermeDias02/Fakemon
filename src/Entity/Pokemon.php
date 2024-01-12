@@ -9,10 +9,14 @@ use App\Repository\PokemonRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 
 
 #[ORM\Entity(repositoryClass: PokemonRepository::class)]
 #[ApiResource]
+#[ApiFilter(SearchFilter::class, properties: ['region.id' => 'exact'])]
+#[ApiFilter(SearchFilter::class, properties: ['type.id' => 'exact'])]
 class Pokemon
 {
     #[ORM\Id]
