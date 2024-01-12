@@ -261,10 +261,10 @@ document.getElementById('fighterFilter').classList.remove('selected');
 }
 
 function fetchPokemonsByFilter() {
-    fetch(apiUrl)
+    fetch("http://127.0.0.1:8000/api/pokema?pokemon.region=johto")
         .then(response => response.json())
         .then(data => {
-            console.log(filtreRegionVar[0]);
+           /* console.log(filtreRegionVar[0]);
             if(filtreRegionVar.length > 0 && filtreTypeVar.length > 0){
             pokemons = data['hydra:member'].filter(pokemon => 
     pokemon.region === filtreRegionVar[0] && pokemon.type === filtreTypeVar[0]
@@ -278,7 +278,8 @@ function fetchPokemonsByFilter() {
 
             }
             pokemons.sort((a, b) => a.idNat - b.idNat);
-
+*/
+            pokemons = data;
             displayPokemonsList(pokemons);
         })
         .catch(error => console.error(`Erreur lors de la récupération des pokemons depuis l'API avec filtre ':`, error));
