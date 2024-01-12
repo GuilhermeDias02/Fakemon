@@ -17,6 +17,25 @@
 </a>
 </div>
 
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="input-group">
+          <input type="text" class="form-control typeahead" placeholder="Recherche...">
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary" id="search-bar-pokemon" type="button">Rechercher</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+<div id="pokemonViewContainerSearch" style="max-width: 60%; margin: 0 auto;">
+            </div>
+
+
+
 <div>
 <h2>Filtre par region</h2>
 <button class="button" id="allFilterRegion" class="region-filter-button selected">All</button>
@@ -55,8 +74,15 @@
 
 <div id="pokemonViewContainer" style="max-width: 60%; margin: 0 auto;">
 </div>
+  <!-- Bootstrap JS and Popper.js -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-            
+  <!-- Bootstrap Typeahead JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.2/bootstrap3-typeahead.min.js"></script>
+  
+
 {% endblock %}
 
 {% block javascripts %}
@@ -64,16 +90,32 @@
         <script>
 
         document.addEventListener("DOMContentLoaded", function() {
-            var pokemons = [];
+            
+      
+
+        var pokemons = [];
         var apiUrl = 'http://127.0.0.1:8000/api/pokemon';
         var regionFilterButtons = document.querySelectorAll('.region-filter-button');
         var filtreRegionVar = [];
          var filtreTypeVar = [];
+   var suggestions = ['Pikachu', 'Pikachu2', 'Bulbasaur', 'Charmander', 'Squirtle', 'Mewtwo', 'Eevee', 'Snorlax'];
+         var tabPokemonSearch = [];
+         var idSearchPokemon ='';
+         fetchPokemonsList();
+         console.log(tabPokemonSearch);
+         console.log(suggestions);
 
+     
 
 
     document.getElementById('allFilterRegion').classList.add('selected');
     document.getElementById('allFilterType').classList.add('selected');
+
+
+    document.getElementById('search-bar-pokemon').addEventListener('click', function() {
+      viewPokemonSearch(idSearchPokemon);
+
+        });
 
 
      document.querySelector('.button-view').addEventListener('click', function() {
@@ -82,10 +124,11 @@
 });
 
         document.getElementById('allFilterRegion').addEventListener('click', function() {
+           filtreRegionVar = [];
             fetchPokemons();
     clearFilterRegion();
     this.classList.add('selected');
-            
+
         });
 
 
@@ -282,6 +325,54 @@ function fetchPokemonsByFilter() {
             }
 
         
+         function fetchPokemonsList() {
+                fetch(apiUrl)
+                    .then(response => response.json())
+                    .then(data => {
+                        // Mettez à jour la variable pokemons avec les données de l'API
+                        var pokemonList = data['hydra:member']; // Assurez-vous que la structure des données correspond à ce que vous attendez
+                        console.log("Pokemons récupérés depuis l'API :", pokemonList);
+                   
+        
+            var tabPokemon = [];
+            pokemonList.forEach(pokemon => {
+                tabPokemon.push(pokemon.name);
+            });
+
+              var simplifiedList = pokemonList.map(pokemon => ({
+                name: pokemon.name,
+                id: pokemon.id
+            }));
+
+            tabPokemonSearch = simplifiedList;
+         console.log("Liste simplifiée :", tabPokemon);
+            // Retournez uniquement les noms des Pokémon
+                     console.log(tabPokemonSearch);
+
+
+
+  $('.typeahead').typeahead({
+      source: tabPokemonSearch
+    });
+
+$('.typeahead').on('change', function () {
+    // Obtenez l'objet Pokémon sélectionné directement depuis la source
+    var selectedPokemon = $('.typeahead').typeahead('getActive');
+
+    if (selectedPokemon) {
+        console.log('Selected Pokémon ID:', selectedPokemon.id);
+        idSearchPokemon = selectedPokemon.id;
+    }
+
+    // Ajoutez votre message dans la console lorsque la sélection change
+    console.log('Selection changed');
+});
+
+     
+                   
+                    })
+                    .catch(error => console.error('Erreur lors de la récupération des pokemons depuis l\'API:', error));
+            }
 
 
 function displayPokemonsList(pokemons) {
@@ -394,6 +485,8 @@ function displayPokemonsList(pokemons) {
     }
 }
             fetchPokemons();
+
+            
         });
 
 
@@ -457,13 +550,68 @@ function viewPokemon(id) {
                 </div>
             `;
                     containerElementView.appendChild(modal);
-
+    
+        
+       
+       
         }
+
 
 
         )
 }
 
+
+function viewPokemonSearch(id) {
+        var containerElementView = document.getElementById('pokemonViewContainerSearch');
+containerElementView.innerHTML='';
+    fetch(`http://127.0.0.1:8000/api/pokemon/${id}`, {
+      method: 'GET',
+      headers: {
+          'Content-Type': 'application/ld+json', // Set the content type to application/ld+json
+        // You might need to include additional headers like authentication
+      },
+    })        .then(response => response.json())
+        .then(data => {
+            // Create a Bootstrap modal
+            var classPok = '.'+data.name+'-'+data.idPokedex;
+            var modal = document.createElement('div');
+            modal.innerHTML = `
+                <div class="modal-dialog" role="document" id="${data.name}#${data.idPokedex}">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">${data.name} - #${data.idPokedex}</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p>ID: ${data.id}</p>
+                            <p>Type: ${data.type}</p>
+                            <p>Type 2: ${data.type2 || '-'}</p>
+                            <!-- Add more details here based on your data structure -->
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary ${data.name}-${data.idPokedex}" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+                    containerElementView.appendChild(modal);
+        document.querySelector(".close").addEventListener('click', function () {
+                containerElementView.innerHTML = "";
+                });
+                 document.querySelector(classPok).addEventListener('click', function () {
+                containerElementView.innerHTML = "";
+                });
+       
+       
+        }
+
+
+
+        )
+}
 
         </script>
 

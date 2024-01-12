@@ -50,18 +50,33 @@
             return formElement;
         }
 
+
+function removeLeadingZeros(str) {
+    // Utiliser une expression régulière pour supprimer les zéros à gauche
+    return str.replace(/^0+/, '');
+}
         // Function to handle form submission
         function submitForm(event) {
             event.preventDefault();
 
+
             // Get the form data
             var formData = new FormData(event.target);
-
+            var idPokedexValue = formData.get('idPokedex');
+            var idNat = parseInt(removeLeadingZeros(idPokedexValue));
+            formData.set('idNat', idNat);
+            console.log(formData.get('idNat'));
             // Convert FormData to JSON object
             var jsonFormData = {};
+            console.log(jsonFormData);
             formData.forEach((value, key) => {
-                jsonFormData[key] = value;
+                if (key === "idNat") {
+                    jsonFormData[key] = typeof value === 'number' ? value : parseInt(value, 10);
+                } else {
+                    jsonFormData[key] = value;
+                }
             });
+
 
             // Get the Pokemon ID from the server (you need to set this dynamically)
             var pokemonId = {{ id }}; // Replace with your dynamic ID
